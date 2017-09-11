@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect, Link} from 'react-router-dom'
-import { Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button} from 'react-bootstrap'
+import { Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 
@@ -38,11 +38,11 @@ export default class OsumAIHeaderLogin extends Component {
     }
 
     getInitialState() {
-        return { showModal: false };
+        return { showModal: false }
     }
-    // close() {
-    //     this.setState({ showModal: false });
-    // }
+    closeModal() {
+        this.setState({ showModal: false })
+    }
   
     logout(){
         // ローカルストレージからデータを削除
@@ -55,7 +55,7 @@ export default class OsumAIHeaderLogin extends Component {
         this.setState({showModal : false}) 
         
         // トップに戻す
-        //this.context.history.push('/') //動かん
+        this.props.history.push('/') //動かん
     }
 
     render () {
@@ -64,10 +64,7 @@ export default class OsumAIHeaderLogin extends Component {
     //     { showModal: false }
     // )
 
-     let close = () => (
-        //  this.setState({showModal : false}) 
-         this.state.showModal = false
-    )
+    //const close = () => this.setState({showModal : false}) 
       
     // const open = () => (
     //     this.state.showModal = true
@@ -90,36 +87,47 @@ export default class OsumAIHeaderLogin extends Component {
                 ログイン
             </Button>
 
-            <Modal show={this.state.showModal} onHide={e => {this.close}}>
+            <Modal show={this.state.showModal}>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form horizontal>
                         <FormGroup controlId="formHorizontalUsreid">
-                            <Col componentClass={ControlLabel} sm={2}>
+                            <Col componentClass={ControlLabel} sm={3}>
                             ログインID
                             </Col>
-                            <Col sm={10}>
+                            <Col sm={9}>
                             <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} />
                             </Col>
                         </FormGroup>
                     ​
                         <FormGroup controlId="formHorizontalPassword">
-                            <Col componentClass={ControlLabel} sm={2}>
+                            <Col componentClass={ControlLabel} sm={3}>
                             パスワード
                             </Col>
-                            <Col sm={10}>
+                            <Col sm={9}>
                             <FormControl type="password" placeholder="パスワード" onChange={e => changed('passwd', e)} />
                             </Col>
                         </FormGroup>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="button" onClick={e => {if(this.api('login')){this.close}}}>
+                    <Button type="button" 
+                        onClick={
+                            e => {
+                                    if(this.api('login')){
+                                        this.closeModal()
+                                    }
+                                }
+                        }>
                             ログイン
                     </Button>
-                    <Button type="button" onClick={e => {this.close}}>
+                    <Button type="button" 
+                        onClick={e => {
+                                this.closeModal()
+                            }
+                        }>
                             キャンセル
                     </Button>
                 </Modal.Footer>
@@ -129,8 +137,8 @@ export default class OsumAIHeaderLogin extends Component {
 
     const appLogout = (state) => (
         <div>
-            <span>{state.userid}</span>
-            <Button type="button" onClick={e => this.logout()}>
+            <Label>{state.userid}</Label>&nbsp;
+            <Button type="button" bsSize="large" bsStyle="primary" onClick={e => this.logout()}>
                 ログアウト
             </Button>
         </div>
