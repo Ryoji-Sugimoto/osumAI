@@ -28,7 +28,7 @@ export default class OsumAISoudanChat extends Component {
       }
     })
     return (
-      <div>{conversation}</div>
+      <div style={styles.osumai_chat_area} className='chat_container'>{conversation}</div>
     )
   }
 }

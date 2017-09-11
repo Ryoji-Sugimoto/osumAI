@@ -27,15 +27,14 @@ export default class OsumAISoudan extends Component {
     return (
       <div>
         <OsumAIHeader title='お住まい相談' />
-        <Form>
-        <FormGroup>
-          <InputGroup>
-            <FormControl type="text" value={this.state.ask} onChange={e => this.setState({ask: e.target.value})}/>
-            <InputGroup.Addon onClick={e => this.post()}>送信</InputGroup.Addon>
-          </InputGroup>
-        </FormGroup>
+        <Form style={styles.osumai_soudan_input}>
+          <FormGroup>
+            <InputGroup>
+              <FormControl type="text" value={this.state.ask} onChange={e => this.setState({ask: e.target.value})}/>
+              <InputGroup.Addon onClick={e => this.post()}>送信</InputGroup.Addon>
+            </InputGroup>
+          </FormGroup>
         </Form>
-        <div style={styles.clearbath}/>
         <OsumAISoudanChat ref='chat'/>
       </div>
     )
