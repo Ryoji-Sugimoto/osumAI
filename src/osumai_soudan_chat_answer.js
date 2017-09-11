@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import {Row} from 'react-bootstrap'
 import styles from './styles'
 
@@ -11,10 +12,16 @@ export default class OsumAISoudanChatAnswer extends Component {
     // 
     return (
       <Row>
-      	<div className="col-xs-11">
+      	<div className="col-xs-12">
       		<p className="balloon-left">{this.props.answer}</p>
       	</div>
       </Row>
     )
+  }
+  componentDidUpdate() {
+    var obj = ReactDOM.findDOMNode(this)
+    if(!obj) {
+      obj.scrollIntoView(true)
+    }
   }
 }

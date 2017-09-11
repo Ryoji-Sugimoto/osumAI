@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Redirect, Link} from 'react-router-dom'
-import { Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
+import { Navbar, Nav, NavItem, Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 
@@ -59,93 +59,99 @@ export default class OsumAIHeaderLogin extends Component {
     }
 
     render () {
-
-    // const getInitialState = () => (
-    //     { showModal: false }
-    // )
-
-    //const close = () => this.setState({showModal : false}) 
-      
-    // const open = () => (
-    //     this.state.showModal = true
-    // )
     
-    const appLogin = (state) => (
-        <div>
-            <Button type="button"
-                bsStyle="primary"
-                bsSize="large"
-            >
-                ユーザー新規登録
-            </Button>
+        const appLogin = (state) => (
+            <Navbar>
+                <Nav pullRight>
+                    <div>
+                        <Button type="button"
+                            bsStyle="primary"
+                            bsSize="large"
+                        >
+                            ユーザー新規登録
+                        </Button>
 
-            <Button type="button"
-                bsStyle="primary"
-                bsSize="large"
-                onClick={()=>this.setState({ showModal: true })}
-            >
-                ログイン
-            </Button>
-
-            <Modal show={this.state.showModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form horizontal>
-                        <FormGroup controlId="formHorizontalUsreid">
-                            <Col componentClass={ControlLabel} sm={3}>
-                            ログインID
-                            </Col>
-                            <Col sm={9}>
-                            <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} />
-                            </Col>
-                        </FormGroup>
-                    ​
-                        <FormGroup controlId="formHorizontalPassword">
-                            <Col componentClass={ControlLabel} sm={3}>
-                            パスワード
-                            </Col>
-                            <Col sm={9}>
-                            <FormControl type="password" placeholder="パスワード" onChange={e => changed('passwd', e)} />
-                            </Col>
-                        </FormGroup>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button type="button" 
-                        onClick={
-                            e => {
-                                    if(this.api('login')){
-                                        this.closeModal()
-                                    }
-                                }
-                        }>
+                        <Button type="button"
+                            bsStyle="primary"
+                            bsSize="large"
+                            onClick={()=>this.setState({ showModal: true })}
+                        >
                             ログイン
-                    </Button>
-                    <Button type="button" 
-                        onClick={e => {
-                                this.closeModal()
-                            }
-                        }>
-                            キャンセル
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-    )
+                        </Button>
 
-    const appLogout = (state) => (
-        <div>
-            <Label>{state.userid}</Label>&nbsp;
-            <Button type="button" bsSize="large" bsStyle="primary" onClick={e => this.logout()}>
-                ログアウト
-            </Button>
-        </div>
-    )
+                        <Modal show={this.state.showModal} onHide={e => {
+                                            this.closeModal()
+                                        }}>
+                            <Modal.Header closeButton>
+                                <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form horizontal>
+                                    <FormGroup controlId="formHorizontalUsreid">
+                                        <Col componentClass={ControlLabel} sm={3}>
+                                        ログインID
+                                        </Col>
+                                        <Col sm={9}>
+                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} />
+                                        </Col>
+                                    </FormGroup>
+                                ​
+                                    <FormGroup controlId="formHorizontalPassword">
+                                        <Col componentClass={ControlLabel} sm={3}>
+                                        パスワード
+                                        </Col>
+                                        <Col sm={9}>
+                                        <FormControl type="password" placeholder="パスワード" onChange={e => changed('passwd', e)} />
+                                        </Col>
+                                    </FormGroup>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button type="button" bsStyle="primary"
+                                    onClick={
+                                        e => {
+                                                if(this.api('login')){
+                                                    this.closeModal()
+                                                }
+                                            }
+                                    }>
+                                        ログイン
+                                </Button>
+                                <Button type="button" 
+                                    onClick={e => {
+                                            this.closeModal()
+                                        }
+                                    }>
+                                        キャンセル
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+                </Nav>
+            </Navbar>
+        )
 
-    const changed = (name, e) => this.setState({[name]: e.target.value})
-            if (window.localStorage['sns_auth_token'] != '') {
+        const appLogout = (state) => (
+            <Navbar>
+                <Nav>
+                    <NavItem eventKey={1} href="#"><Link to="/">トップ</Link></NavItem>
+                    <NavItem eventKey={2} href="#"><Link to="/soudan">お住まい相談</Link></NavItem>
+                    <NavItem eventKey={3} href="#"><Link to="/favorite">お気に入り</Link></NavItem>
+                    <NavItem eventKey={4} href="#"><Link to="/survey">アンケート</Link></NavItem>
+                </Nav>
+                <Nav pullRight>
+                    <div>
+                        <h3 className='text-center' style={styles.osumai_nav_right}>{state.userid}</h3>&nbsp;&nbsp;
+                        <Button type="button" bsSize="large" bsStyle="primary" onClick={e => this.logout()} style={styles.osumai_nav_right}>
+                            ログアウト
+                        </Button>
+                    </div>
+                </Nav>
+            </Navbar>
+        )
+
+        const changed = (name, e) => this.setState({[name]: e.target.value})
+        if (window.localStorage['sns_auth_token'] != '') {
             return appLogout(this.state)
         }
         return appLogin(this.state)
