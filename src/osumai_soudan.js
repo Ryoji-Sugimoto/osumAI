@@ -11,7 +11,7 @@ export default class OsumAISoudan extends Component {
     super(props)
     this.state = { timelines: [], ask: '' }
   }
-  post () {
+  postProc () {
 		// dummy Q
 		this.refs.chat.addAsk(this.state.ask)
 		
@@ -23,6 +23,18 @@ export default class OsumAISoudan extends Component {
     this.setState({ask: ''})
 
   }
+  keyProc(e){
+    if (e.keyCode == 13){
+      this.postProc()
+      e.consume
+    }
+  }
+  keyProc2(e){
+    if (e.keyCode == 13){
+      e.consume
+    }
+  }
+
   render () {
     return (
       <div>
@@ -30,8 +42,12 @@ export default class OsumAISoudan extends Component {
         <Form style={styles.osumai_soudan_input}>
           <FormGroup>
             <InputGroup>
-              <FormControl type="text" value={this.state.ask} onChange={e => this.setState({ask: e.target.value})}/>
-              <InputGroup.Addon onClick={e => this.post()}>送信</InputGroup.Addon>
+              <FormControl type="text" value={this.state.ask} 
+                  onKeyDown={e => this.keyProc(e)}  
+                  onKeyPress={e => this.keyProc2(e)} 
+                  onKeyUp={e => this.keyProc2(e)} 
+                  onChange={e => this.setState({ask: e.target.value})}/>
+              <InputGroup.Addon onClick={e => this.postProc()}>送信</InputGroup.Addon>
             </InputGroup>
           </FormGroup>
         </Form>
