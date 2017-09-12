@@ -21,7 +21,7 @@ export default class OsumAISoudanChatAnswer extends Component {
   componentDidUpdate() {
     var obj = ReactDOM.findDOMNode(this)
     if(!obj) {
-      obj.scrollIntoView(true)
+      obj.scrollIntoView(false)
     }
   }
 }

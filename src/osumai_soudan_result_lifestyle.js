@@ -10,8 +10,8 @@ export default class OsumAISoudanResultLifeStyle extends Component {
   }
   render () {
     return (
-      <div>
-        <div>
+      <div style={styles.osumai_result_area}>
+        <div style={styles.osumai_result_container}>
         	<span>入力頂いた情報から、あなたにとって最適な場所は</span>
         	<span></span>
         	<span>となりました。</span>

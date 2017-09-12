@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import {Redirect, Link} from 'react-router-dom'
 import { Navbar, Nav, NavItem, Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
 import request from 'superagent'
@@ -79,9 +80,14 @@ export default class OsumAIHeaderLogin extends Component {
                             ログイン
                         </Button>
 
-                        <Modal show={this.state.showModal} onHide={e => {
+                        <Modal autoFocus='true' enforceFocus='true' show={this.state.showModal}
+                                onHide={e => {
                                             this.closeModal()
-                                        }}>
+                                        }}
+                                onEntered={e => {
+                                            let input = ReactDOM.findDOMNode(this.refs.usrinput)
+                                            input && input.focus()
+                                    }}>
                             <Modal.Header closeButton>
                                 <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
                             </Modal.Header>
@@ -92,7 +98,7 @@ export default class OsumAIHeaderLogin extends Component {
                                         ログインID
                                         </Col>
                                         <Col sm={9}>
-                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} />
+                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} ref='usrinput' />
                                         </Col>
                                     </FormGroup>
                                 ​
@@ -156,4 +162,9 @@ export default class OsumAIHeaderLogin extends Component {
         }
         return appLogin(this.state)
     }
+    // componentDidUpdate(){
+    //     let input = ReactDOM.findDOMNode(this.refs.usrinput)
+    //     input && input.focus()
+    // }
+    
 }

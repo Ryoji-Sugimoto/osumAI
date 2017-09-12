@@ -1,6 +1,7 @@
 const styles = {
   osumai_bg:{
     backgroundColor: '#2FCDB4',
+    padding: 30,
     marginBottom: 0
   },
   osumai_nav_right:{
@@ -27,6 +28,22 @@ const styles = {
     minHeight: '100%',
     height: 500
     // height: '100%'
+  },
+  osumai_result_area:{
+    backgroundColor: '#F8F8F8'
+  },
+  osumai_result_container:{
+    backgroundColor: 'white',
+    padding: 30,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15
+  },
+  osumai_info_container:{
+    padding: 30,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15
   }
 }
 export default styles
