@@ -9,11 +9,11 @@ export default class OsumAISoudanChatAnswer extends Component {
     super(props)
   }
   render () {
-    // 
+    //
     return (
       <Row>
       	<div className="col-xs-12">
-      		<p className="balloon-left">{this.props.answer}</p>
+      		<p className="balloon-left"><div dangerouslySetInnerHTML={{__html: this.props.answer}} /></p>
       	</div>
       </Row>
     )
