@@ -12,15 +12,23 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "~1.17.1",
+    "cfenv": "~1.0.4",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
     "express": "^4.15.3",
+    "morgan": "~1.8.1",
     "mysql": "^2.14.1",
     "nedb": "^1.8.0",
+    "qs": "^6.5.0",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.5.4",
     "react-router-dom": "^4.1.1",
     "react-tabs": "^2.0.0",
-    "superagent": "^3.5.2"
+    "serve-favicon": "^2.4.3",
+    "superagent": "^3.6.0",
+    "watson-developer-cloud": "^2.39.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

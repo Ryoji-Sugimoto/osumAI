@@ -9,7 +9,7 @@ export default class OsumAISoudanChatAsk extends Component {
     super(props)
   }
   render () {
-    // 
+    //
     return (
       <Row>
       	<div className="col-xs-12">

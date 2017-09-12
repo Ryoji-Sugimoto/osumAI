@@ -10,7 +10,7 @@ export default class OsumAIHeaderLogin extends Component {
         this.state = { userid: '', passwd: '',  upd: '', msg: '' }
         this.state.userid = window.localStorage['sns_id']
     }
-   
+
     // APIを呼びだし、トークンを得てlocalStorageに保存する --- (※1)
     api (command) {
         request
@@ -43,7 +43,7 @@ export default class OsumAIHeaderLogin extends Component {
     closeModal() {
         this.setState({ showModal: false })
     }
-  
+
     logout(){
         // ローカルストレージからデータを削除
         window.localStorage['sns_id'] = ''
@@ -52,14 +52,14 @@ export default class OsumAIHeaderLogin extends Component {
         this.setState({userid: ''})
         this.setState({passwd: ''})
         this.setState({upd: Date()})
-        this.setState({showModal : false}) 
-        
+        this.setState({showModal : false})
+
         // トップに戻す
         this.props.history.push('/') //動かん
     }
 
     render () {
-    
+
         const appLogin = (state) => (
             <Navbar>
                 <Nav pullRight>
@@ -117,7 +117,7 @@ export default class OsumAIHeaderLogin extends Component {
                                     }>
                                         ログイン
                                 </Button>
-                                <Button type="button" 
+                                <Button type="button"
                                     onClick={e => {
                                             this.closeModal()
                                         }
@@ -135,7 +135,7 @@ export default class OsumAIHeaderLogin extends Component {
             <Navbar>
                 <Nav>
                     <NavItem eventKey={1} href="#"><Link to="/">トップ</Link></NavItem>
-                    <NavItem eventKey={2} href="#"><Link to="/soudan">お住まい相談</Link></NavItem>
+                    <NavItem eventKey={2} href="#"><Link to="/chat">お住まい相談</Link></NavItem>
                     <NavItem eventKey={3} href="#"><Link to="/favorite">お気に入り</Link></NavItem>
                     <NavItem eventKey={4} href="#"><Link to="/survey">アンケート</Link></NavItem>
                 </Nav>

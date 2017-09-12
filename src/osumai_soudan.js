@@ -20,15 +20,11 @@ export default class OsumAISoudan extends Component {
 
 		// dummy Q
 		this.refs.chat.addAsk(this.state.ask)
-		
-		// dummy A
-    this.refs.chat.addAnswer('答えです。')
-    
-    // Watsonに尋ねて解答をもらう
 
-    this.setState({ask: ''})
-
+		// Watsonに尋ねて解答をもらう
+    this.ask('/chat/ask/conversation', this.state.ask)
   }
+  
   keyProc(e){
     if (e.keyCode == 13){
       e.preventDefault()
@@ -41,6 +37,28 @@ export default class OsumAISoudan extends Component {
     }
   }
 
+  // Watsonに尋ねる
+  ask(url, text) {
+  // ajaxでconversationにリクエストを投げる。
+  request.get(url)
+    .query({
+      "text": text
+    })
+    .end((err, res) => {
+      if (err) {
+        this.refs.chat.addAnswer("ajax通信が失敗しました。")
+      } else {
+        // watsonの回答を画面に表示させる。
+        this.refs.chat.addAnswer(res.body.message)
+        this.setState({ask: ''})
+        if (res.body.callRaRFlg) {
+          // RaRの呼び出しフラグがtrueの場合、RaRを呼び出す。
+          this.ask('/chat/ask/rank', res.body.needsLifeStyleArray);
+        }
+      }
+    })
+}
+
   render () {
     return (
       <div>
@@ -48,10 +66,10 @@ export default class OsumAISoudan extends Component {
         <Form style={styles.osumai_soudan_input}>
           <FormGroup>
             <InputGroup>
-              <FormControl type="text" value={this.state.ask} 
-                  onKeyDown={e => this.keyProc(e)}  
-                  onKeyPress={e => this.keyProc2(e)} 
-                  onKeyUp={e => this.keyProc2(e)} 
+              <FormControl type="text" value={this.state.ask}
+                  onKeyDown={e => this.keyProc(e)}
+                  onKeyPress={e => this.keyProc2(e)}
+                  onKeyUp={e => this.keyProc2(e)}
                   onChange={e => this.setState({ask: e.target.value})}
                   ref='askinput'/>
               <InputGroup.Addon onClick={e => this.postProc()}>送信</InputGroup.Addon>
@@ -62,6 +80,11 @@ export default class OsumAISoudan extends Component {
       </div>
     )
   }
+
+  componentWillMount(){
+    this.ask('/chat/ask/conversation', 'conversation_start')
+  }
+
   componentDidUpdate(){
     let input = ReactDOM.findDOMNode(this.refs.askinput)
     input && input.focus()

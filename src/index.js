@@ -21,7 +21,7 @@ const OsumAIApp = () => (
     <div>
       <Switch>
         <Route path='/main' component={OsumAIMain} />
-        <Route path='/soudan' component={OsumAISoudan} />
+        <Route path='/chat' component={OsumAISoudan} />
         <Route path='/favorite' component={OsumAISoudanResult} />
         <Route component={OsumAIMain} />
       </Switch>
@@ -36,5 +36,3 @@ window.localStorage['sns_auth_token'] = ''
 ReactDOM.render(
   <OsumAIApp />,
   document.getElementById('root'));
-
-  
