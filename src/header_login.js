@@ -8,7 +8,7 @@ import styles from './styles'
 export default class OsumAIHeaderLogin extends Component {
     constructor (props) {
         super(props)
-        this.state = { userid: '', passwd: '',  upd: '', msg: '' }
+        this.state = { userid: '', passwd: '',  upd: '', msg: '', jump: '' }
         this.state.userid = window.localStorage['sns_id']
     }
    
@@ -36,6 +36,7 @@ export default class OsumAIHeaderLogin extends Component {
                     this.setState({upd: Date()})
                 // トップに戻す
                 //this.context.router.replaceWith('/chat')
+                this.setState({jump: '/chat'})
                 return
             }
         })
@@ -159,6 +160,9 @@ export default class OsumAIHeaderLogin extends Component {
         )
 
         const changed = (name, e) => this.setState({[name]: e.target.value})
+        if(this.state.jump) {
+            return <Redirect to={this.state.jump}/>
+        }
         if (window.localStorage['sns_auth_token'] != '') {
             return appLogout(this.state)
         }
