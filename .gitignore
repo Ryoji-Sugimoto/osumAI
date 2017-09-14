@@ -1,3 +1,5 @@
 #
 node_modules/**/*.*
 server/**/*.db
+server/user.db
+public/bundle.js

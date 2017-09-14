@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {Redirect, Link} from 'react-router-dom'
-import { Navbar, Nav, NavItem, Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
+import ReactDOM from 'react-dom'
+import {Redirect, Link, withRouter} from 'react-router-dom'
+import { Navbar, Nav, NavItem, Modal, Alert, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 
@@ -10,7 +11,7 @@ export default class OsumAIHeaderLogin extends Component {
         this.state = { userid: '', passwd: '',  upd: '', msg: '' }
         this.state.userid = window.localStorage['sns_id']
     }
-
+   
     // APIを呼びだし、トークンを得てlocalStorageに保存する --- (※1)
     api (command) {
         request
@@ -22,19 +23,22 @@ export default class OsumAIHeaderLogin extends Component {
         .end((err, res) => {
             if (err) {
                 // @TODO エラーメッセージ表示
+                this.setState({msg: r.msg})
+                alert(this.state.msg)
                 return
             }
             const r = res.body
             console.log(r)
             if (r.status && r.token) {
-            // 認証トークンをlocalStorageに保存
-            window.localStorage['sns_id'] = this.state.userid
-            window.localStorage['sns_auth_token'] = r.token
-                this.setState({upd: Date()})
-            return
-        }
-        this.setState({msg: r.msg})
-      })
+                // 認証トークンをlocalStorageに保存
+                window.localStorage['sns_id'] = this.state.userid
+                window.localStorage['sns_auth_token'] = r.token
+                    this.setState({upd: Date()})
+                // トップに戻す
+                //this.context.router.replaceWith('/chat')
+                return
+            }
+        })
     }
 
     getInitialState() {
@@ -43,7 +47,6 @@ export default class OsumAIHeaderLogin extends Component {
     closeModal() {
         this.setState({ showModal: false })
     }
-
     logout(){
         // ローカルストレージからデータを削除
         window.localStorage['sns_id'] = ''
@@ -52,14 +55,14 @@ export default class OsumAIHeaderLogin extends Component {
         this.setState({userid: ''})
         this.setState({passwd: ''})
         this.setState({upd: Date()})
-        this.setState({showModal : false})
-
+        this.setState({showModal : false}) 
+        
         // トップに戻す
-        this.props.history.push('/') //動かん
+        window.location.href = '/'
     }
 
     render () {
-
+    
         const appLogin = (state) => (
             <Navbar>
                 <Nav pullRight>
@@ -79,9 +82,14 @@ export default class OsumAIHeaderLogin extends Component {
                             ログイン
                         </Button>
 
-                        <Modal show={this.state.showModal} onHide={e => {
+                        <Modal autoFocus='true' enforceFocus='true' show={this.state.showModal}
+                                onHide={e => {
                                             this.closeModal()
-                                        }}>
+                                        }}
+                                onEntered={e => {
+                                            let input = ReactDOM.findDOMNode(this.refs.usrinput)
+                                            input && input.focus()
+                                    }}>
                             <Modal.Header closeButton>
                                 <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
                             </Modal.Header>
@@ -92,7 +100,7 @@ export default class OsumAIHeaderLogin extends Component {
                                         ログインID
                                         </Col>
                                         <Col sm={9}>
-                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} />
+                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} ref='usrinput' />
                                         </Col>
                                     </FormGroup>
                                 ​
@@ -117,7 +125,7 @@ export default class OsumAIHeaderLogin extends Component {
                                     }>
                                         ログイン
                                 </Button>
-                                <Button type="button"
+                                <Button type="button" 
                                     onClick={e => {
                                             this.closeModal()
                                         }
@@ -156,4 +164,5 @@ export default class OsumAIHeaderLogin extends Component {
         }
         return appLogin(this.state)
     }
+    
 }

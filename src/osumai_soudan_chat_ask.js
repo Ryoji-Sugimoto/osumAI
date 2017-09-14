@@ -9,7 +9,7 @@ export default class OsumAISoudanChatAsk extends Component {
     super(props)
   }
   render () {
-    //
+    // 
     return (
       <Row>
       	<div className="col-xs-12">
@@ -21,7 +21,7 @@ export default class OsumAISoudanChatAsk extends Component {
   componentDidUpdate() {
     var obj = ReactDOM.findDOMNode(this)
     if(!obj) {
-      obj.scrollIntoView(true)
+      obj.scrollIntoView(false)
     }
   }
 }

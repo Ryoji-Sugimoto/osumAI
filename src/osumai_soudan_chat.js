@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import request from 'superagent'
 import styles from './styles'
 import OsumAIHeader from './headers'
@@ -28,7 +29,17 @@ export default class OsumAISoudanChat extends Component {
       }
     })
     return (
-      <div style={styles.osumai_chat_area} className='chat_container'>{conversation}</div>
+      <div style={styles.osumai_chat_area} className='chat_container' ref="conversationList">{conversation}</div>
     )
+  }
+  scrollToBottom() {
+    const { conversationList } = this.refs;
+    const scrollHeight = conversationList.scrollHeight;
+    const height = conversationList.clientHeight;
+    const maxScrollTop = scrollHeight - height;
+    ReactDOM.findDOMNode(conversationList).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  }
+  componentDidUpdate() {
+    this.scrollToBottom();
   }
 }
