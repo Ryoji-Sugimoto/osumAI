@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {Redirect, Link} from 'react-router-dom'
-import { Navbar, Nav, NavItem, Modal, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
+import { Navbar, Nav, NavItem, Modal, Alert, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 
@@ -23,19 +23,20 @@ export default class OsumAIHeaderLogin extends Component {
         .end((err, res) => {
             if (err) {
                 // @TODO エラーメッセージ表示
+                this.setState({msg: r.msg})
+                alert(this.state.msg)
                 return
             }
             const r = res.body
             console.log(r)
             if (r.status && r.token) {
-            // 認証トークンをlocalStorageに保存
-            window.localStorage['sns_id'] = this.state.userid
-            window.localStorage['sns_auth_token'] = r.token
-                this.setState({upd: Date()})
-            return
-        }
-        this.setState({msg: r.msg})
-      })
+                // 認証トークンをlocalStorageに保存
+                window.localStorage['sns_id'] = this.state.userid
+                window.localStorage['sns_auth_token'] = r.token
+                    this.setState({upd: Date()})
+                return
+            }
+        })
     }
 
     getInitialState() {
@@ -44,7 +45,6 @@ export default class OsumAIHeaderLogin extends Component {
     closeModal() {
         this.setState({ showModal: false })
     }
-  
     logout(){
         // ローカルストレージからデータを削除
         window.localStorage['sns_id'] = ''
