@@ -50,6 +50,11 @@ const styles = {
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15
+  },
+  result_address:{
+    color: 'red',
+    padding: 15,
+    fontWeight: 'bold'
   }
 }
 export default styles

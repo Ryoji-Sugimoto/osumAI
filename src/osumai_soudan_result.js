@@ -4,6 +4,7 @@ import request from 'superagent'
 import styles from './styles'
 import OsumAIHeader from './headers'
 import OsumAISoudanResultLifeStyle from './osumai_soudan_result_lifestyle'
+import OsumAISoudanResultDetail from './osumai_soudan_result_detail'
 
 // 相談画面を定義するコンポーネント
 export default class OsumAISoudan extends Component {
@@ -23,7 +24,7 @@ export default class OsumAISoudan extends Component {
 							<OsumAISoudanResultLifeStyle/>
 						</Tab>
 						<Tab eventKey={3} title="詳細情報">
-						<h2>工事中（詳細情報）</h2>
+						  <OsumAISoudanResultDetail/>
 						</Tab>
 					</Tabs>
         </div>

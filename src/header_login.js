@@ -21,13 +21,13 @@ export default class OsumAIHeaderLogin extends Component {
             passwd: this.state.passwd
         })
         .end((err, res) => {
-            if (err) {
+            const r = res.body
+            if (err || !r.status) {
                 // @TODO エラーメッセージ表示
                 this.setState({msg: r.msg})
                 alert(this.state.msg)
                 return
             }
-            const r = res.body
             console.log(r)
             if (r.status && r.token) {
                 // 認証トークンをlocalStorageに保存
