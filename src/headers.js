@@ -9,7 +9,7 @@ export default class OsumAIHeader extends Component {
     render () {
         if (window.localStorage['sns_auth_token'] != '') {
             return (
-                <div>
+                <div style={styles.osumai_header}>
                     <Jumbotron style={styles.osumai_bg}>
                         <h1 style={styles.osumai_banner_color}>Osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
                     </Jumbotron>
@@ -18,7 +18,7 @@ export default class OsumAIHeader extends Component {
             )
         }
         return (
-            <div>
+            <div style={styles.osumai_header}>
                 <Jumbotron style={styles.osumai_bg}>
                     <h1 style={styles.osumai_banner_color}>Osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
                 </Jumbotron>

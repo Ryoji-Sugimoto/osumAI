@@ -1,4 +1,7 @@
 const styles = {
+  osumai_header:{
+    height: 200
+  },
   osumai_bg:{
     backgroundColor: '#2FCDB4',
     padding: 10,
@@ -26,7 +29,7 @@ const styles = {
     marginLeft: 15,
     marginRight: 15,
     minHeight: '100%',
-    height: '80vh'
+    height: 'calc(100vh - 260px)'
     // height: 500
   },
   osumai_result_area:{
