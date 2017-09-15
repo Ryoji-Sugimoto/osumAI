@@ -35,7 +35,6 @@ export default class OsumAIHeaderLogin extends Component {
                 window.localStorage['sns_auth_token'] = r.token
                     this.setState({upd: Date()})
                 // トップに戻す
-                //this.context.router.replaceWith('/chat')
                 this.setState({jump: '/chat'})
                 return
             }
@@ -59,9 +58,23 @@ export default class OsumAIHeaderLogin extends Component {
         this.setState({showModal : false}) 
         
         // トップに戻す
-        window.location.href = '/'
+        // window.location.href = '/'
+        this.setState({jump: '/'})
     }
-
+    keyProc(e){
+        if (e.keyCode == 13){
+          e.preventDefault()
+            if(this.api('login')){
+                this.closeModal()
+            }
+        }
+    }
+    keyProc2(e){
+        if (e.keyCode == 13){
+            e.preventDefault()
+        }
+    }
+    
     render () {
     
         const appLogin = (state) => (
@@ -101,7 +114,11 @@ export default class OsumAIHeaderLogin extends Component {
                                         ログインID
                                         </Col>
                                         <Col sm={9}>
-                                        <FormControl type="userid" placeholder="ログインID" onChange={e => changed('userid', e)} ref='usrinput' />
+                                        <FormControl type="userid" placeholder="ログインID"
+                                            onKeyDown={e => this.keyProc(e)}
+                                            onKeyPress={e => this.keyProc2(e)}
+                                            onKeyUp={e => this.keyProc2(e)}
+                                            onChange={e => changed('userid', e)} ref='usrinput' />
                                         </Col>
                                     </FormGroup>
                                 ​
@@ -110,7 +127,11 @@ export default class OsumAIHeaderLogin extends Component {
                                         パスワード
                                         </Col>
                                         <Col sm={9}>
-                                        <FormControl type="password" placeholder="パスワード" onChange={e => changed('passwd', e)} />
+                                        <FormControl type="password" placeholder="パスワード" 
+                                            onKeyDown={e => this.keyProc(e)}
+                                            onKeyPress={e => this.keyProc2(e)}
+                                            onKeyUp={e => this.keyProc2(e)}
+                                            onChange={e => changed('passwd', e)} />
                                         </Col>
                                     </FormGroup>
                                 </Form>
