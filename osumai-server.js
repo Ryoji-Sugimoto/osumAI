@@ -4,7 +4,9 @@
 // データベースに接続 --- (※1)
 const db = require('./server/database')
 // chat
-const chat = require('./server/chat');
+const chat = require('./server/chat')
+// favicon
+const favicon = require('serve-favicon')
 
 // WEBサーバを起動 --- (※2)
 const express = require('express')
@@ -59,6 +61,7 @@ app.get('/api/get_user', (req, res) => {
 })
 
 app.use('/chat', chat);
+app.use(favicon(__dirname + '/public/favicon.ico'))
 // 静的ファイルを自動的に返すようルーティングする --- (※10)
 app.use('/public', express.static('./public'))
 app.use('/login', express.static('./public'))

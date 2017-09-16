@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import { Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button} from 'react-bootstrap'
+import { Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Glyphicon} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 import OsumAIHeader from './headers'
@@ -24,7 +24,7 @@ export default class OsumAISoudan extends Component {
 		// Watsonに尋ねて解答をもらう
     this.ask('/chat/ask/conversation', this.state.ask)
   }
-  
+
   keyProc(e){
     if (e.keyCode == 13){
       e.preventDefault()
@@ -72,7 +72,7 @@ export default class OsumAISoudan extends Component {
                   onKeyUp={e => this.keyProc2(e)}
                   onChange={e => this.setState({ask: e.target.value})}
                   ref='askinput'/>
-              <InputGroup.Addon onClick={e => this.postProc()}>送信</InputGroup.Addon>
+              <InputGroup.Addon onClick={e => this.postProc()}><Glyphicon glyph="send"/></InputGroup.Addon>
             </InputGroup>
           </FormGroup>
         </Form>

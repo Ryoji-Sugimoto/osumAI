@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {Redirect, Link, withRouter} from 'react-router-dom'
-import { Navbar, Nav, NavItem, Modal, Alert, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label} from 'react-bootstrap'
+import {Navbar, Nav, NavItem, Modal, Alert, Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Label, Glyphicon} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 
@@ -11,7 +11,7 @@ export default class OsumAIHeaderLogin extends Component {
         this.state = { userid: '', passwd: '',  upd: '', msg: '', jump: '' }
         this.state.userid = window.localStorage['sns_id']
     }
-   
+
     // APIを呼びだし、トークンを得てlocalStorageに保存する --- (※1)
     api (command) {
         request
@@ -55,8 +55,8 @@ export default class OsumAIHeaderLogin extends Component {
         this.setState({userid: ''})
         this.setState({passwd: ''})
         this.setState({upd: Date()})
-        this.setState({showModal : false}) 
-        
+        this.setState({showModal : false})
+
         // トップに戻す
         // window.location.href = '/'
         this.setState({jump: '/'})
@@ -74,9 +74,9 @@ export default class OsumAIHeaderLogin extends Component {
             e.preventDefault()
         }
     }
-    
+
     render () {
-    
+
         const appLogin = (state) => (
             <Navbar>
                 <Nav pullRight>
@@ -127,7 +127,7 @@ export default class OsumAIHeaderLogin extends Component {
                                         パスワード
                                         </Col>
                                         <Col sm={9}>
-                                        <FormControl type="password" placeholder="パスワード" 
+                                        <FormControl type="password" placeholder="パスワード"
                                             onKeyDown={e => this.keyProc(e)}
                                             onKeyPress={e => this.keyProc2(e)}
                                             onKeyUp={e => this.keyProc2(e)}
@@ -147,7 +147,7 @@ export default class OsumAIHeaderLogin extends Component {
                                     }>
                                         ログイン
                                 </Button>
-                                <Button type="button" 
+                                <Button type="button"
                                     onClick={e => {
                                             this.closeModal()
                                         }
@@ -164,10 +164,10 @@ export default class OsumAIHeaderLogin extends Component {
         const appLogout = (state) => (
             <Navbar>
                 <Nav>
-                    <NavItem eventKey={1} href="#"><Link to="/">トップ</Link></NavItem>
-                    <NavItem eventKey={2} href="#"><Link to="/chat">お住まい相談</Link></NavItem>
-                    <NavItem eventKey={3} href="#"><Link to="/favorite">お気に入り</Link></NavItem>
-                    <NavItem eventKey={4} href="#"><Link to="/survey">アンケート</Link></NavItem>
+                    <NavItem eventKey={1} href="#"><Link to="/"><Glyphicon glyph="home"/></Link></NavItem>
+                    <NavItem eventKey={2} href="#"><Link to="/chat"><Glyphicon glyph="comment"/></Link></NavItem>
+                    <NavItem eventKey={3} href="#"><Link to="/favorite"><Glyphicon glyph="star"/></Link></NavItem>
+                    <NavItem eventKey={4} href="#"><Link to="/survey"><Glyphicon glyph="edit"/></Link></NavItem>
                 </Nav>
                 <Nav pullRight>
                     <div>
@@ -189,5 +189,5 @@ export default class OsumAIHeaderLogin extends Component {
         }
         return appLogin(this.state)
     }
-    
+
 }

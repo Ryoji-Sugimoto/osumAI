@@ -11,7 +11,7 @@ export default class OsumAIHeader extends Component {
             return (
                 <div style={styles.osumai_header}>
                     <Jumbotron style={styles.osumai_bg}>
-                        <h1 style={styles.osumai_banner_color}>Osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
+                        <h1 style={styles.osumai_banner_color}>osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
                     </Jumbotron>
                     <OsumAIHeaderLogin/>
                 </div>
@@ -20,7 +20,7 @@ export default class OsumAIHeader extends Component {
         return (
             <div style={styles.osumai_header}>
                 <Jumbotron style={styles.osumai_bg}>
-                    <h1 style={styles.osumai_banner_color}>Osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
+                    <h1 style={styles.osumai_banner_color}>osum<span style={styles.osumai_banner_color_ai}>AI</span></h1>
                 </Jumbotron>
                 <OsumAIHeaderLogin/>
             </div>
