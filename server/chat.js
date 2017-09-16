@@ -12,8 +12,24 @@ const conversation = require('../utils/watson/conversation');
 // RaRのモデルを取得。
 const retrieve = require('../utils/watson/rar');
 
-// RaRのrankerIDを定義。
-const rankerId = '7ff711x34-rank-2134';
+// rankerIdを取得する。
+var rankerId = '';
+retrieve.retrieveAndRank.listRankers({"sort": "created"},
+  function(err, response) {
+    if (err)
+      console.log('error: ', err);
+    else
+      var rankers = response["rankers"];
+
+      rankers = rankers.sort(function(a,b){
+        return (a.created < b.created ? 1 : -1);
+      });
+
+      rankerId = rankers[0].ranker_id;
+      console.log('rankerId : ' + rankerId);
+});
+
+//const rankerId = '7ff711x34-rank-2134';
 
 // solrClientを生成する。
 const solrClient = retrieve.retrieveAndRank.createSolrClient({
