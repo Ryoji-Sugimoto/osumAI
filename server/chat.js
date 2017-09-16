@@ -30,6 +30,12 @@ var context = {};
 // ライフスタイルに対する要望
 var needsLifeStyleArray = [];
 
+// 場所検索フラグ
+var placeFlg = false;
+
+// ユーザーから入力された場所
+var place = '';
+
 const
   // RaRの回答結果表示数
   displayRaR = 3,
@@ -69,10 +75,18 @@ router.get('/ask/conversation', (req, res) => {
       // conversationから回答を受け取る
       var conAnswer = response;
       console.log(JSON.stringify(response));
-      var message = conAnswer["output"].text[0];
+
+      // conversationから受け取ったcontextの値を書き換える。
       context = conAnswer["context"];
-      callRaRFlg = conAnswer["context"].callRetrieveAndRank;
-      var needsLifeStyle = conAnswer["context"].needs_of_lifeStyle.value;
+
+      // conversationから受け取ったcontextの値を取得する。
+      callRaRFlg = context.callRetrieveAndRank;
+      placeFlg = context.placeFlg;
+      place = context.place;
+      var needsLifeStyle = context.needs_of_lifeStyle.value;
+
+      // conversationからの回答を取得する。
+      var message = conAnswer["output"].text[0];
 
       if (needsLifeStyle != "" && needsLifeStyleArray.indexOf(needsLifeStyle)) {
         // ライフスタイルの要望が""でない、かつ 過去に同じ要望がない場合、リストに格納。
@@ -83,7 +97,9 @@ router.get('/ask/conversation', (req, res) => {
       res.send({
         message: message,
         callRaRFlg: callRaRFlg,
-        needsLifeStyleArray: needsLifeStyleArray
+        needsLifeStyleArray: needsLifeStyleArray,
+        placeFlg: placeFlg,
+        place: place
       });
     }
   });
@@ -98,22 +114,34 @@ router.get('/ask/rank', (req, res) => {
     var questionArray = req.query.text;
     // 質問
     var question = "";
+    // RaRの回答
+    var rarAnswer = '';
+    // RaRに投げる検索クエリー
+    var query = '';
 
-    for (var i = 0; i < questionArray.length; i++) {
-      if (i == 0) {
-        question = questionArray[i];
-      } else {
-        question = question + 'AND' + questionArray[i];
+    if (placeFlg) {
+      // 特定の場所について検索する場合
+
+      // 特定の場所を検索する検索条件を生成する。
+      question = 'title:' + place;
+
+    } else {
+      // ライフスタイルについての要望について検索する場合
+
+      // ライフスタイルについての要望を検索する検索条件を生成する。
+      for (var i = 0; i < questionArray.length; i++) {
+        if (i == 0) {
+          question = questionArray[i];
+        } else {
+          question = question + 'AND' + questionArray[i];
+        }
       }
     }
 
-    //var query = solrClient.createQuery();
-    var rarAnswer = '';
-    //query.q(question);
-    var query = qs.stringify({
+    // RaRに投げる検索クエリーを生成する。
+    query = qs.stringify({
       q: question,
       ranker_id: rankerId,
-      //rows: 5,
       fl: 'title,body,ranker.confidence'
     });
 
@@ -126,23 +154,27 @@ router.get('/ask/rank', (req, res) => {
         console.error('Error searching for documents: ' + err);
       } else {
         console.log('Found count : ' + searchResponse.response.numFound + ' document(s).');
-        var content = JSON.stringify(searchResponse.response.docs);
-        console.log('Found result : ' + content);
-        var message = searchResponse.response.docs[0].title;
+        console.log('Found result : ' + JSON.stringify(searchResponse.response.docs));
+
         var message = '';
         var messageList = searchResponse.response;
 
         for (var i = 0; i < displayRaR; i++) {
           var doc = messageList.docs[i];
-          if(doc != null){
-              message = message + doc.title + br + doc.body + br + br;
+          if (doc != null) {
+            message = message + doc.title + br + doc.body + br + br;
           }
+        }
+
+        if(placeFlg){
+          message = place + 'について、以下のような情報があります。' + br + br + message;
+        } else {
+          message = '以下はどうでしょうか?' + br + br + message;
         }
 
         // クライアントに値を送信する。
         res.send({
-          message: '以下はどうでしょうか?' + br + br + message,
-          //message: JSON.stringify(searchResponse.response),
+          message: message,
           callRaRFlg: false
         });
       }
