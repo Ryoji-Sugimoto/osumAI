@@ -1,0 +1,18 @@
+{
+  "appenders": [{
+      "type": "dateFile",
+      "filename": "logs/chat.log",
+      "pattern": "-yyyy-MM-dd",
+      "alwaysIncludePattern": false,
+      "maxLogSize": 20480,
+      "backups": 3,
+      "category": "chat"
+    },
+    {
+      "type": "console"
+    }
+  ],
+  "levels": {
+    "system": "ALL"
+  }
+}

@@ -2,6 +2,9 @@
 
 const express = require('express');
 const router = express.Router();
+const log4js = require('log4js')
+log4js.configure('./logs/log4js.config.json');
+var logger = log4js.getLogger('chat');
 
 // queryString
 const qs = require('qs');
@@ -17,7 +20,7 @@ var rankerId = '';
 retrieve.retrieveAndRank.listRankers({"sort": "created"},
   function(err, response) {
     if (err)
-      console.log('error: ', err);
+      logger.error('error: ', err);
     else
       var rankers = response["rankers"];
 
@@ -63,7 +66,6 @@ const
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log('chat');
   res.send("");
 });
 
@@ -86,11 +88,11 @@ router.get('/ask/conversation', (req, res) => {
   }, function(err, response) {
     console.log('conversationの呼び出し');
     if (err) {
-      console.error(err);
+      logger.error(err);
     } else {
       // conversationから回答を受け取る
       var conAnswer = response;
-      console.log(JSON.stringify(response));
+      logger.debug('Conversation : ' + JSON.stringify(response));
 
       // conversationから受け取ったcontextの値を書き換える。
       context = conAnswer["context"];
@@ -161,16 +163,15 @@ router.get('/ask/rank', (req, res) => {
       fl: 'title,body,ranker.confidence'
     });
 
-    console.log('RaRへのクエリー : ' + JSON.stringify(query));
+    logger.debug('RaRへのクエリー : ' + JSON.stringify(query));
 
     solrClient.get('fcselect', query, function(err, searchResponse) {
       // RaRに尋ねる。
       console.log('RetrieveAndRankの呼び出し');
       if (err) {
-        console.error('Error searching for documents: ' + err);
+        logger.error('Error searching for documents: ' + err);
       } else {
-        console.log('Found count : ' + searchResponse.response.numFound + ' document(s).');
-        console.log('Found result : ' + JSON.stringify(searchResponse.response.docs));
+        logger.debug('RaR : ' + JSON.stringify(searchResponse.response.docs));
 
         var message = '';
         var messageList = searchResponse.response;

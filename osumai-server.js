@@ -7,6 +7,10 @@ const db = require('./server/database')
 const chat = require('./server/chat')
 // favicon
 const favicon = require('serve-favicon')
+// log用モジュール
+const log4js = require('log4js');
+log4js.configure(__dirname + '/logs/log4js.config.json');
+var logger = log4js.getLogger('app');
 
 // WEBサーバを起動 --- (※2)
 const express = require('express')
@@ -61,10 +65,15 @@ app.get('/api/get_user', (req, res) => {
 })
 
 app.use('/chat', chat);
-app.use(favicon(__dirname + '/public/favicon.ico'))
+app.use(favicon(__dirname + '/public/favicon.ico'));
+// log4jsの設定
+app.use(log4js.connectLogger(logger, { level: 'auto' }));
+
 // 静的ファイルを自動的に返すようルーティングする --- (※10)
 app.use('/public', express.static('./public'))
 app.use('/login', express.static('./public'))
 app.use('/users', express.static('./public'))
 // app.use('/timeline', express.static('./public'))
 app.use('/', express.static('./public'))
+
+module.exports = app;
