@@ -72,7 +72,7 @@ export default class OsumAISoudan extends Component {
                   onKeyUp={e => this.keyProc2(e)}
                   onChange={e => this.setState({ask: e.target.value})}
                   ref='askinput'/>
-              <InputGroup.Addon onClick={e => this.postProc()}><Glyphicon glyph="send"/></InputGroup.Addon>
+              <InputGroup.Addon onClick={e => this.postProc()}><Glyphicon glyph="send" title="送信"/></InputGroup.Addon>
             </InputGroup>
           </FormGroup>
         </Form>

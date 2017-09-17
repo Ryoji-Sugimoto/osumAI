@@ -164,10 +164,10 @@ export default class OsumAIHeaderLogin extends Component {
         const appLogout = (state) => (
             <Navbar>
                 <Nav>
-                    <NavItem eventKey={1} href="#"><Link to="/"><Glyphicon glyph="home"/></Link></NavItem>
-                    <NavItem eventKey={2} href="#"><Link to="/chat"><Glyphicon glyph="comment"/></Link></NavItem>
-                    <NavItem eventKey={3} href="#"><Link to="/favorite"><Glyphicon glyph="star"/></Link></NavItem>
-                    <NavItem eventKey={4} href="#"><Link to="/survey"><Glyphicon glyph="edit"/></Link></NavItem>
+                    <NavItem eventKey={1} href="#"><Link to="/"><Glyphicon glyph="home" title="ホーム"/></Link></NavItem>
+                    <NavItem eventKey={2} href="#"><Link to="/chat"><Glyphicon glyph="comment" title="お住い相談"/></Link></NavItem>
+                    <NavItem eventKey={3} href="#"><Link to="/favorite"><Glyphicon glyph="star" title="お気に入り"/></Link></NavItem>
+                    <NavItem eventKey={4} href="#"><Link to="/survey"><Glyphicon glyph="edit" title="アンケート"/></Link></NavItem>
                 </Nav>
                 <Nav pullRight>
                     <div>
