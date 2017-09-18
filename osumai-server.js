@@ -15,7 +15,8 @@ var logger = log4js.getLogger('app');
 // WEBサーバを起動 --- (※2)
 const express = require('express')
 const app = express()
-const portNo = 3001
+// Bluemix環境とローカル環境でポート番号を振り分ける。
+const portNo = process.env.PORT || 3001
 app.listen(portNo, () => {
   console.log('起動しました', `http://localhost:${portNo}`)
 })

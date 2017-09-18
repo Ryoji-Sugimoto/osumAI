@@ -1,0 +1,9 @@
+---
+applications:
+- random-route: true
+  host: osumAI
+  name: osumAI
+  command: node osumai-server.js
+  path: .
+  domain: mybluemix.net
+  instances: 1
