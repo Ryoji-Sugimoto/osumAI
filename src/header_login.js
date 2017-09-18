@@ -33,7 +33,8 @@ export default class OsumAIHeaderLogin extends Component {
                 // 認証トークンをlocalStorageに保存
                 window.localStorage['sns_id'] = this.state.userid
                 window.localStorage['sns_auth_token'] = r.token
-                    this.setState({upd: Date()})
+                window.localStorage['conversation'] = ''
+                this.setState({upd: Date()})
                 // トップに戻す
                 this.setState({jump: '/chat'})
                 return
@@ -45,12 +46,13 @@ export default class OsumAIHeaderLogin extends Component {
         return { showModal: false }
     }
     closeModal() {
-        this.setState({ showModal: false })
+        this.setState({ showModal: false, isAutoFocus: true, isEnforceFocus: true })
     }
     logout(){
         // ローカルストレージからデータを削除
         window.localStorage['sns_id'] = ''
         window.localStorage['sns_auth_token'] = ''
+        window.localStorage['conversation'] = ''
         // 状態のリセット
         this.setState({userid: ''})
         this.setState({passwd: ''})
@@ -80,83 +82,83 @@ export default class OsumAIHeaderLogin extends Component {
         const appLogin = (state) => (
             <Navbar>
                 <Nav pullRight>
-                    <div>
-                        <Button type="button"
-                            bsStyle="primary"
-                            bsSize="large"
-                        >
-                            ユーザー新規登録
-                        </Button>
+                    <Button type="button"
+                        bsStyle="primary"
+                        bsSize="large"
+                    >
+                        ユーザー新規登録
+                    </Button>
 
-                        <Button type="button"
-                            bsStyle="primary"
-                            bsSize="large"
-                            onClick={()=>this.setState({ showModal: true })}
-                        >
-                            ログイン
-                        </Button>
+                    <Button type="button"
+                        bsStyle="primary"
+                        bsSize="large"
+                        onClick={()=>this.setState({ showModal: true, isAutoFocus: true, isEnforceFocus: true })}
+                    >
+                        ログイン
+                    </Button>
 
-                        <Modal autoFocus='true' enforceFocus='true' show={this.state.showModal}
-                                onHide={e => {
-                                            this.closeModal()
-                                        }}
-                                onEntered={e => {
-                                            let input = ReactDOM.findDOMNode(this.refs.usrinput)
-                                            input && input.focus()
-                                    }}>
-                            <Modal.Header closeButton>
-                                <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form horizontal>
-                                    <FormGroup controlId="formHorizontalUsreid">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                        ログインID
-                                        </Col>
-                                        <Col sm={9}>
-                                        <FormControl type="userid" placeholder="ログインID"
-                                            onKeyDown={e => this.keyProc(e)}
-                                            onKeyPress={e => this.keyProc2(e)}
-                                            onKeyUp={e => this.keyProc2(e)}
-                                            onChange={e => changed('userid', e)} ref='usrinput' />
-                                        </Col>
-                                    </FormGroup>
-                                ​
-                                    <FormGroup controlId="formHorizontalPassword">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                        パスワード
-                                        </Col>
-                                        <Col sm={9}>
-                                        <FormControl type="password" placeholder="パスワード"
-                                            onKeyDown={e => this.keyProc(e)}
-                                            onKeyPress={e => this.keyProc2(e)}
-                                            onKeyUp={e => this.keyProc2(e)}
-                                            onChange={e => changed('passwd', e)} />
-                                        </Col>
-                                    </FormGroup>
-                                </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button type="button" bsStyle="primary"
-                                    onClick={
-                                        e => {
-                                                if(this.api('login')){
-                                                    this.closeModal()
-                                                }
+                    <Modal autoFocus={this.state.isAutoFocus} 
+                            enforceFocus={this.state.isEnforceFocus} 
+                            show={this.state.showModal}
+                            onHide={e => {
+                                        this.closeModal()
+                                    }}
+                            onEntered={e => {
+                                        let input = ReactDOM.findDOMNode(this.refs.usrinput)
+                                        input && input.focus()
+                                }}>
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title">ログイン</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form horizontal>
+                                <FormGroup controlId="formHorizontalUsreid">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                    ログインID
+                                    </Col>
+                                    <Col sm={9}>
+                                    <FormControl type="userid" placeholder="ログインID"
+                                        onKeyDown={e => this.keyProc(e)}
+                                        onKeyPress={e => this.keyProc2(e)}
+                                        onKeyUp={e => this.keyProc2(e)}
+                                        onChange={e => changed('userid', e)} ref='usrinput' />
+                                    </Col>
+                                </FormGroup>
+                            ​
+                                <FormGroup controlId="formHorizontalPassword">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                    パスワード
+                                    </Col>
+                                    <Col sm={9}>
+                                    <FormControl type="password" placeholder="パスワード"
+                                        onKeyDown={e => this.keyProc(e)}
+                                        onKeyPress={e => this.keyProc2(e)}
+                                        onKeyUp={e => this.keyProc2(e)}
+                                        onChange={e => changed('passwd', e)} />
+                                    </Col>
+                                </FormGroup>
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button type="button" bsStyle="primary"
+                                onClick={
+                                    e => {
+                                            if(this.api('login')){
+                                                this.closeModal()
                                             }
-                                    }>
-                                        ログイン
-                                </Button>
-                                <Button type="button"
-                                    onClick={e => {
-                                            this.closeModal()
                                         }
-                                    }>
-                                        キャンセル
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </div>
+                                }>
+                                    ログイン
+                            </Button>
+                            <Button type="button"
+                                onClick={e => {
+                                        this.closeModal()
+                                    }
+                                }>
+                                    キャンセル
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Nav>
             </Navbar>
         )
@@ -166,7 +168,7 @@ export default class OsumAIHeaderLogin extends Component {
                 <Nav>
                     <NavItem eventKey={1} href="#"><Link to="/"><Glyphicon glyph="home" title="ホーム"/></Link></NavItem>
                     <NavItem eventKey={2} href="#"><Link to="/chat"><Glyphicon glyph="comment" title="お住い相談"/></Link></NavItem>
-                    <NavItem eventKey={3} href="#"><Link to="/favorite"><Glyphicon glyph="star" title="お気に入り"/></Link></NavItem>
+                    <NavItem eventKey={3} href="#"><Link to="/favorite/大阪駅"><Glyphicon glyph="star" title="お気に入り"/></Link></NavItem>
                     <NavItem eventKey={4} href="#"><Link to="/survey"><Glyphicon glyph="edit" title="アンケート"/></Link></NavItem>
                 </Nav>
                 <Nav pullRight>

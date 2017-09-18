@@ -8,8 +8,31 @@ import OsumAIHeader from './headers'
 export default class OsumAISoudanResultDetail extends Component {
   constructor (props) {
     super(props)
+    this.state = {facilities: []}
+    this.api(this.props.station)
   }
-  render () {
+
+  api (station) {
+    request
+    .get('/api/facilities/' + station)
+    .end((err, res) => {
+        const r = res.body
+        if (err || !r.status) {
+            // @TODO エラーメッセージ表示
+            this.setState({msg: r.msg})
+            alert(this.state.msg)
+            return
+        }
+        console.log(r)
+        if (r.status) {
+            this.setState({facilities: r.facilities})
+            return
+            // return r.facilities
+          }
+    })
+  }
+
+render () {
 
     // いいねボタンの張りぼて
     const iine = () => (
@@ -23,12 +46,23 @@ export default class OsumAISoudanResultDetail extends Component {
       </div>
     )
 
+    const facilities = this.state.facilities.map(e => {
+      return(
+        <li>{e.name}　：　 {e.count}件</li>  
+        // <li>{e.name}</li>  
+      )
+    })
+
     return (
       <div style={styles.osumai_result_area}>
         <div style={styles.osumai_result_container}>
-          <div>
-            {/*この中に張りぼてを置く？ */}
-            </div>
+          <div>地域にある施設
+            <ul>
+              {/* 施設情報 */}
+              {/* {this.facilitiesList()} */}
+              {facilities}
+            </ul>
+          </div>
           {iine()}
         </div>
         <div style={styles.osumai_result_container}>

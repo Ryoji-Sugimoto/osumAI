@@ -173,25 +173,29 @@ router.get('/ask/rank', (req, res) => {
       } else {
         logger.debug('RaR : ' + JSON.stringify(searchResponse.response.docs));
 
-        var message = '';
+        var message = [];
+        // var message = '';
         var messageList = searchResponse.response;
 
         for (var i = 0; i < displayRaR; i++) {
-          var doc = messageList.docs[i];
-          if (doc != null) {
-            message = message + doc.title + br + doc.body + br + br;
-          }
+          // var doc = messageList.docs[i];
+          // if (doc != null) {
+          //   // message = message + doc.title + br + doc.body + br + br;
+          // }
+          message.push(messageList.docs[i]);
         }
 
-        if(placeFlg){
-          message = place + 'について、以下のような情報があります。' + br + br + message;
-        } else {
-          message = '以下はどうでしょうか?' + br + br + message;
-        }
+        // if(placeFlg){
+        //   message = place + 'について、以下のような情報があります。' + br + br + message;
+        // } else {
+        //   message = '以下はどうでしょうか?' + br + br + message;
+        // }
 
         // クライアントに値を送信する。
         res.send({
           message: message,
+          place: place,
+          placeFlg: placeFlg,
           callRaRFlg: false
         });
       }

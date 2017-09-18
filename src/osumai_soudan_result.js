@@ -11,6 +11,7 @@ export default class OsumAISoudan extends Component {
   constructor (props) {
     super(props)
   }
+
   render () {
     return (
       <div>
@@ -21,10 +22,10 @@ export default class OsumAISoudan extends Component {
 							<h2>工事中（検索条件）</h2>
 						</Tab>
 						<Tab eventKey={2} title="ライフスタイル">
-							<OsumAISoudanResultLifeStyle/>
+							<OsumAISoudanResultLifeStyle station={this.props.match.params.station}/>
 						</Tab>
 						<Tab eventKey={3} title="詳細情報">
-						  <OsumAISoudanResultDetail/>
+						  <OsumAISoudanResultDetail station={this.props.match.params.station}/>
 						</Tab>
 					</Tabs>
         </div>

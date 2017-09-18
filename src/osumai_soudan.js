@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
+import {Redirect, Link, withRouter} from 'react-router-dom'
 import { Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Glyphicon} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
@@ -10,7 +11,7 @@ import OsumAISoudanChat from './osumai_soudan_chat'
 export default class OsumAISoudan extends Component {
   constructor (props) {
     super(props)
-    this.state = { timelines: [], ask: '' }
+    this.state = { timelines: [], ask: '', station: '' }
   }
   postProc () {
 
@@ -60,6 +61,10 @@ export default class OsumAISoudan extends Component {
 }
 
   render () {
+    if (this.state.station) {
+      <Redirect to={this.state.station}/>
+      this.setState({station: ''})
+    }
     return (
       <div>
         <OsumAIHeader title='お住まい相談' />
@@ -82,7 +87,9 @@ export default class OsumAISoudan extends Component {
   }
 
   componentWillMount(){
-    this.ask('/chat/ask/conversation', 'conversation_start')
+    if (window.localStorage['conversation'] == '') {
+      this.ask('/chat/ask/conversation', 'conversation_start')
+    }  
   }
 
   componentDidUpdate(){

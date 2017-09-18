@@ -22,7 +22,8 @@ const OsumAIApp = () => (
       <Switch>
         <Route path='/main' component={OsumAIMain} />
         <Route path='/chat' component={OsumAISoudan} />
-        <Route path='/favorite' component={OsumAISoudanResult} />
+        <Route path='/favorite/:station' component={OsumAISoudanResult} />
+        <Route path='/result/:station' component={OsumAISoudanResult} />
         <Route component={OsumAIMain} />
       </Switch>
     </div>

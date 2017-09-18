@@ -9,6 +9,7 @@ export default class OsumAISoudanResultLifeStyle extends Component {
   constructor (props) {
     super(props)
   }
+
   render () {
 
     // いいねボタンの張りぼて
@@ -27,7 +28,7 @@ export default class OsumAISoudanResultLifeStyle extends Component {
       <div style={styles.osumai_result_area}>
         <div style={styles.osumai_result_container}>
         	<span>入力頂いた情報から、あなたにとって最適な場所は</span>
-        	<div style={styles.result_address}></div>
+        	<h2 style={styles.result_address}>{this.props.station}</h2>
         	<span>となりました。</span>
           {iine()}
         </div>

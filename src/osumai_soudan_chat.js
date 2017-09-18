@@ -5,20 +5,31 @@ import styles from './styles'
 import OsumAIHeader from './headers'
 import OsumAISoudanChatAsk from './osumai_soudan_chat_ask'
 import OsumAISoudanChatAnswer from './osumai_soudan_chat_answer'
+import OsumAISoudanChatRnRAnswer from './osumai_soudan_chat_rnranswer'
 
 // 相談画面を定義するコンポーネント
 export default class OsumAISoudanChat extends Component {
   constructor (props) {
     super(props)
-    this.state = { conversation: [] }
+    if(window.localStorage['conversation'] == ''){
+      this.state = { conversation: [] }
+    } else {
+      this.state = { conversation: JSON.parse(window.localStorage['conversation']) }
+    }
   }
   addAsk (ask) {
     this.state.conversation.push({type: 'ask', ask: ask, answer: ''})
 
   }
   addAnswer (answer) {
-  	this.state.conversation.push({type: 'answer', ask: '', answer: answer})
+    if(!Array.isArray(answer)){
+      this.state.conversation.push({type: 'answer', ask: '', answer: answer})
+    } else {
+      this.state.conversation.push({type: 'rnranswer', ask: '', answer: answer})
+    }
+    window.localStorage['conversation'] = JSON.stringify(this.state.conversation)
   }
+
   render () {
     // 
     const conversation = this.state.conversation.map(e => {
@@ -26,6 +37,8 @@ export default class OsumAISoudanChat extends Component {
         return (<OsumAISoudanChatAsk ask={e.ask}/> )
       } else if (e.type === 'answer') {
         return (<OsumAISoudanChatAnswer answer={e.answer}/>)
+      } else if (e.type === 'rnranswer') {
+        return (<OsumAISoudanChatRnRAnswer answer={e.answer}/>)
       }
     })
     return (
