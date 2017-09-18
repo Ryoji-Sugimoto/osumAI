@@ -35,6 +35,10 @@ export default class OsumAISoudanResultLifeStyle extends Component {
         <div style={styles.osumai_result_container}>
           <div>
               {/*この中に張りぼてを置く？ */}
+              <span>■家族へのメリット・デメリット</span>
+              <div>
+                <img src="./hukakati.png" />;
+              </div>
             </div>
           {iine()}
         </div>
