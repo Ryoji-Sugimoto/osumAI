@@ -68,6 +68,10 @@ render () {
         <div style={styles.osumai_result_container}>
           <div>
             {/*この中に張りぼてを置く？ */}
+            <span>■お金に関する情報</span>
+            <div>
+              <img src="./okane.png" />;
+            </div>
           </div>
           {iine()}
         </div>
