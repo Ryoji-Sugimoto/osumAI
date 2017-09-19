@@ -81,7 +81,7 @@ app.use('/', express.static('./public'))
 
 // 地点の施設を取得する。
 app.use('/api/facilities/:station', (req, res) =>{
-  console.log(req.params);
+  console.log('/api/facilities：' + req.params);
   const station = req.params.station
   const categryList = [{key: 'kekka1' , name: 'グルメ・飲食'},
                         {key: 'kekka2' , name: 'ショッピング'},
@@ -104,9 +104,9 @@ app.use('/api/facilities/:station', (req, res) =>{
   var ido = '';
   var keido = '';
   var kekkaList = [];
-
   
   if (!station) {
+    console.log('施設情報取得エラー(地点データ無し)');
     return res.json({status: false, msg: '施設情報取得エラー(地点データ無し)'})
   }
 
@@ -116,6 +116,8 @@ app.use('/api/facilities/:station', (req, res) =>{
     .query({titen: station})
     .end(function(err2, res2){
       if (res2.ok) {
+
+        console.log('res2.ok');
         console.log(res2.body);
 
         ido = res2.body.ido;
@@ -148,13 +150,6 @@ app.use('/api/facilities/:station', (req, res) =>{
         res.json({status: false, msg: '施設情報取得エラー'})
       }
     });
-  // const testDatas = [
-  //     {name:'学校', distance:'10'}, 
-  //     {name:'病院', distance:'20'}, 
-  //     {name:'美容室', distance:'25'}, 
-  //     {name:'スーパー', distance:'50'}, 
-  //     {name:'役所', distance:'100'}
-  //   ]
 })
 
 module.exports = app;

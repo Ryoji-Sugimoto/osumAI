@@ -56,7 +56,7 @@ render () {
     return (
       <div style={styles.osumai_result_area}>
         <div style={styles.osumai_result_container}>
-          <div>地域にある施設
+          <div>■地域にある施設
             <ul>
               {/* 施設情報 */}
               {/* {this.facilitiesList()} */}
@@ -70,7 +70,7 @@ render () {
             {/*この中に張りぼてを置く？ */}
             <span>■お金に関する情報</span>
             <div>
-              <img src="./okane.png" />;
+              <img src="/okane.png" />
             </div>
           </div>
           {iine()}
