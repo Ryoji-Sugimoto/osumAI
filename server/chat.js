@@ -17,20 +17,22 @@ const retrieve = require('../utils/watson/rar');
 
 // rankerIdを取得する。
 var rankerId = '';
-retrieve.retrieveAndRank.listRankers({"sort": "created"},
+retrieve.retrieveAndRank.listRankers({
+    "sort": "created"
+  },
   function(err, response) {
     if (err)
       logger.error('error: ', err);
     else
       var rankers = response["rankers"];
 
-      rankers = rankers.sort(function(a,b){
-        return (a.created < b.created ? 1 : -1);
-      });
+    rankers = rankers.sort(function(a, b) {
+      return (a.created < b.created ? 1 : -1);
+    });
 
-      rankerId = rankers[0].ranker_id;
-      console.log('rankerId : ' + rankerId);
-});
+    rankerId = rankers[0].ranker_id;
+    console.log('rankerId : ' + rankerId);
+  });
 
 //const rankerId = '7ff711x34-rank-2134';
 
@@ -101,14 +103,23 @@ router.get('/ask/conversation', (req, res) => {
       callRaRFlg = context.callRetrieveAndRank;
       placeFlg = context.placeFlg;
       place = context.place;
-      var needsLifeStyle = context.needs_of_lifeStyle.value;
+      var needsLifeStyle = '';
+      var value = context.needs_of_lifeStyle.value;
+      var entity = context.needs_of_lifeStyle.entity;
+
+      // ユーザーの要望を取得する。
+      if (entity != null && entity != '') {
+        needsLifeStyle = entity;
+      } else {
+        needsLifeStyle = value;
+      }
 
       // conversationからの回答を取得する。
       var message = conAnswer["output"].text[0];
 
-      if (needsLifeStyle != "" && needsLifeStyleArray.indexOf(needsLifeStyle)) {
+      if (needsLifeStyle != '' && needsLifeStyleArray.indexOf(needsLifeStyle) == -1) {
         // ライフスタイルの要望が""でない、かつ 過去に同じ要望がない場合、リストに格納。
-        needsLifeStyleArray.push(conAnswer["context"].needs_of_lifeStyle.value);
+        needsLifeStyleArray.push(needsLifeStyle);
       }
 
       // クライアントに値を送信する。
@@ -129,7 +140,7 @@ router.get('/ask/rank', (req, res) => {
     // callRaRFlgを初期化する。
     callRaRFlg = false;
     // ユーザーからの質問を取得する。
-    var questionArray = req.query.text;
+    var questionParam = req.query.text;
     // 質問
     var question = "";
     // RaRの回答
@@ -147,12 +158,18 @@ router.get('/ask/rank', (req, res) => {
       // ライフスタイルについての要望について検索する場合
 
       // ライフスタイルについての要望を検索する検索条件を生成する。
-      for (var i = 0; i < questionArray.length; i++) {
-        if (i == 0) {
-          question = questionArray[i];
-        } else {
-          question = question + 'AND' + questionArray[i];
+      if (Array.isArray(questionParam)) {
+        // 要望が複数個ある場合
+        for (var i = 0; i < questionParam.length; i++) {
+          if (i == 0) {
+            question = questionParam[i];
+          } else {
+            question = question + 'AND' + questionParam[i];
+          }
         }
+      } else {
+        // 要望が単数の場合
+        question = questionParam;
       }
     }
 
