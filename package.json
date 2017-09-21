@@ -24,8 +24,11 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.5.4",
+    "react-google-maps": "^8.2.0",
+    "react-icons": "^2.2.5",
     "react-router-dom": "^4.1.1",
     "react-tabs": "^2.0.0",
+    "recompose": "^0.25.0",
     "serve-favicon": "^2.4.3",
     "superagent": "^3.6.0",
     "watson-developer-cloud": "^2.39.0"
