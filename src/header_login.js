@@ -8,6 +8,8 @@ import styles from './styles'
 export default class OsumAIHeaderLogin extends Component {
     constructor (props) {
         super(props)
+        console.log('OsumAIHeaderLogin::constructor')
+        console.log('OsumAIHeaderLogin::setState(jump:)')
         this.state = { userid: '', passwd: '',  upd: '', msg: '', jump: '' }
         this.state.userid = window.localStorage['sns_id']
     }
@@ -36,6 +38,7 @@ export default class OsumAIHeaderLogin extends Component {
                 window.localStorage['conversation'] = ''
                 this.setState({upd: Date()})
                 // トップに戻す
+                console.log('OsumAIHeaderLogin::setState(jump:/chat)')
                 this.setState({jump: '/chat'})
                 return
             }
@@ -61,6 +64,7 @@ export default class OsumAIHeaderLogin extends Component {
 
         // トップに戻す
         // window.location.href = '/'
+        console.log('OsumAIHeaderLogin::setState(jump:/)')
         this.setState({jump: '/'})
     }
     keyProc(e){
@@ -85,8 +89,8 @@ export default class OsumAIHeaderLogin extends Component {
                     <Button type="button"
                         bsStyle="primary"
                         bsSize="large"
-                    >
-                        ユーザー新規登録
+                        onClick={()=>this.setState({ jump: "/useradd" })}
+                    >ユーザー新規登録
                     </Button>
 
                     <Button type="button"
@@ -183,13 +187,47 @@ export default class OsumAIHeaderLogin extends Component {
         )
 
         const changed = (name, e) => this.setState({[name]: e.target.value})
-        if(this.state.jump) {
+
+        console.log('window.location.pathname:' + window.location.pathname)
+
+        if(this.state.jump && this.state.jump != window.location.pathname) {
             return <Redirect to={this.state.jump}/>
         }
+        // this.setState({jump: ''})
         if (window.localStorage['sns_auth_token'] != '') {
             return appLogout(this.state)
         }
         return appLogin(this.state)
     }
+
+    componentDidMount() {
+        console.log('OsumAIHeaderLogin::componentDidMount')
+        // super.componentDidMount()
+        console.log('OsumAIHeaderLogin::setState(jump:)')
+        this.setState({jump: ''})
+    }
+    componentWillUnmount() {
+        console.log('OsumAIHeaderLogin::componentWillUnmount')
+        // super.componentWillUnmount()
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('OsumAIHeaderLogin::componentWillReceiveProps')
+        // super.componentWillReceiveProps(nextProps)
+    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('OsumAIHeaderLogin::shouldComponentUpdate')
+    //     // super.shouldComponentUpdate(nextProps, nextState)
+    // }
+    componentWillUpdate(nextProps, nextState) {
+        console.log('OsumAIHeaderLogin::componentWillUpdate')
+        // super.componentWillUpdate(nextProps, nextState)
+    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log('OsumAIHeaderLogin::componentDidUpdate')
+        // super.componentDidUpdate(prevProps, prevState)
+        // console.log('OsumAIHeaderLogin::setState(jump:)')
+        // this.setState({jump: ''})
+    }
+
 
 }

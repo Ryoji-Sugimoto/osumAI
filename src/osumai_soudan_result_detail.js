@@ -116,7 +116,7 @@ render () {
         containerElement: <div style={{ height: `400px` }} />,
         mapElement: <div style={{ height: `100%` }} />,
       }),
-      withState('zoom', 'onZoomChange', 25),
+      withState('zoom', 'onZoomChange', 16),
       withHandlers(() => {
         const refs = {
           map: undefined,
@@ -144,13 +144,13 @@ render () {
           position={{ lat: this.state.ido, lng: this.state.keido }}
           onClick={props.onToggleOpen}
         >
-          <InfoWindow onCloseClick={props.onToggleOpen}>
+          {/* <InfoWindow onCloseClick={props.onToggleOpen}>
             <div>
               <FaAnchor />
               {" "}
               Controlled zoom: {props.zoom}
             </div>
-          </InfoWindow>
+          </InfoWindow> */}
         </Marker>
       </GoogleMap>
     );

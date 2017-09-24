@@ -92,6 +92,11 @@ export default class OsumAISoudan extends Component {
     }  
   }
 
+  componentDidMount() {
+    let input = ReactDOM.findDOMNode(this.refs.askinput)
+    input && input.focus()
+  }
+
   componentDidUpdate(){
     let input = ReactDOM.findDOMNode(this.refs.askinput)
     input && input.focus()

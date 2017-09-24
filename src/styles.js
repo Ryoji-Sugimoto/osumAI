@@ -55,6 +55,19 @@ const styles = {
     color: 'red',
     padding: 15,
     fontWeight: 'bold'
+  },
+  osumai_question_container:{
+    backgroundColor: '#F8F8F8',
+    padding: 30,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15
+  },
+  osumai_user_add: {
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15
   }
 }
 export default styles

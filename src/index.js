@@ -6,7 +6,9 @@ import {
 } from 'react-router-dom'
 import OsumAIMain from './osumai_main'
 import OsumAISoudan from './osumai_soudan'
+import OsumAIUserAdd from './osumai_user_add'
 import OsumAISoudanResult from './osumai_soudan_result'
+import OsumAIQuestion from './osumai_question'
 
 function loggedIn() {
   if (!token) {
@@ -22,8 +24,10 @@ const OsumAIApp = () => (
       <Switch>
         <Route path='/main' component={OsumAIMain} />
         <Route path='/chat' component={OsumAISoudan} />
+        <Route path='/useradd' component={OsumAIUserAdd} />
         <Route path='/favorite/:station' component={OsumAISoudanResult} />
         <Route path='/result/:station' component={OsumAISoudanResult} />
+        <Route path='/survey' component={OsumAIQuestion} />
         <Route component={OsumAIMain} />
       </Switch>
     </div>
