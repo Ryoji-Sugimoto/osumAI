@@ -68,6 +68,19 @@ const styles = {
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15
+  },
+  osumai_img:{
+    width: '100%',
+    maxWidth: '600px'
+  },
+  osumai_text:{
+    width: '100%'
+  },
+  osumai_submit:{
+    textAlign: 'right',
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15
   }
 }
 export default styles
