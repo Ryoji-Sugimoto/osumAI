@@ -16,13 +16,13 @@ function getHash (pw) {
   hashsum.update(pw + salt)
   return hashsum.digest('hex')
 }
-// 認証用のトークンを生成 --- (※3)
+// 認証用のトークンを生成 
 function getAuthToken (userid) {
   const time = (new Date()).getTime()
   return getHash(`${userid}:${time}`)
 }
 
-// 以下APIで利用するDBの操作メソッド --- (※4)
+// 以下APIで利用するDBの操作メソッド 
 // ユーザの検索
 function getUser (userid, callback) {
   userDB.findOne({userid}, (err, user) => {
@@ -30,34 +30,37 @@ function getUser (userid, callback) {
     callback(user)
   })
 }
-// ユーザの新規追加 --- (※5)
-function addUser (userid, passwd, callback) {
+// ユーザの新規追加 
+function addUser (userid, passwd, username, callback) {
+  console.log('addUser()：userid: ' + userid + ' passwd: ' + passwd + ' username: ' + username);
   const hash = getHash(passwd)
   const token = getAuthToken(userid)
-  const regDoc = {userid, hash, token, friends: {}}
+  const regDoc = {userid, username, hash, token, friends: {}}
   userDB.insert(regDoc, (err, newdoc) => {
     if (err) return callback(null)
     callback(token)
   })
 }
-// ログインの試行 --- (※6)
+// ログインの試行
 function login (userid, passwd, callback) {
   const hash = getHash(passwd)
   const token = getAuthToken(userid)
   // ユーザ情報を取得
   getUser(userid, (user) => {
+    console.log('login()：userid: ' + userid + ' hash: ' + hash + ' user.hash: ' + user.hash);
     if (!user || user.hash !== hash) {
       return callback(new Error('認証エラー'), null)
     }
+    const username = user.username
     // 認証トークンを更新
     user.token = token
     updateUser(user, (err) => {
       if (err) return callback(err, null)
-      callback(null, token)
+      callback(null, token, username)
     })
   })
 }
-// 認証トークンの確認 --- (※7)
+// 認証トークンの確認 
 function checkToken (userid, token, callback) {
   // ユーザ情報を取得
   getUser(userid, (user) => {
@@ -67,7 +70,7 @@ function checkToken (userid, token, callback) {
     callback(null, user)
   })
 }
-// ユーザ情報を更新 --- (※7)
+// ユーザ情報を更新
 function updateUser (user, callback) {
   userDB.update({userid: user.userid}, user, {}, (err, n) => {
     if (err) return callback(err, null)

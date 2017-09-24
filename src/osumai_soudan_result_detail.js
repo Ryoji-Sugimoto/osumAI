@@ -144,13 +144,6 @@ render () {
           position={{ lat: this.state.ido, lng: this.state.keido }}
           onClick={props.onToggleOpen}
         >
-          {/* <InfoWindow onCloseClick={props.onToggleOpen}>
-            <div>
-              <FaAnchor />
-              {" "}
-              Controlled zoom: {props.zoom}
-            </div>
-          </InfoWindow> */}
         </Marker>
       </GoogleMap>
     );

@@ -34,8 +34,9 @@ const OsumAIApp = () => (
   </Router>
 )
 
-window.localStorage['sns_id'] = ''
-window.localStorage['sns_auth_token'] = ''
+window.localStorage['login_id'] = ''
+window.localStorage['login_name'] = ''
+window.localStorage['login_auth_token'] = ''
 
 // DOMにメインコンポーネントを書き込む
 ReactDOM.render(

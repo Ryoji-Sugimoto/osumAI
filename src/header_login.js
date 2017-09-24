@@ -10,11 +10,12 @@ export default class OsumAIHeaderLogin extends Component {
         super(props)
         console.log('OsumAIHeaderLogin::constructor')
         console.log('OsumAIHeaderLogin::setState(jump:)')
-        this.state = { userid: '', passwd: '',  upd: '', msg: '', jump: '' }
-        this.state.userid = window.localStorage['sns_id']
+        this.state = { userid: '', username: '', passwd: '',  upd: '', msg: '', jump: '' }
+        this.state.userid = window.localStorage['login_id']
+        this.state.username = window.localStorage['login_name']
     }
 
-    // APIを呼びだし、トークンを得てlocalStorageに保存する --- (※1)
+    // APIを呼びだし、トークンを得てlocalStorageに保存する
     api (command) {
         request
         .get('/api/' + command)
@@ -33,8 +34,9 @@ export default class OsumAIHeaderLogin extends Component {
             console.log(r)
             if (r.status && r.token) {
                 // 認証トークンをlocalStorageに保存
-                window.localStorage['sns_id'] = this.state.userid
-                window.localStorage['sns_auth_token'] = r.token
+                window.localStorage['login_id'] = this.state.userid
+                window.localStorage['login_auth_token'] = r.token
+                window.localStorage['login_name'] = r.username
                 window.localStorage['conversation'] = ''
                 this.setState({upd: Date()})
                 // トップに戻す
@@ -53,11 +55,13 @@ export default class OsumAIHeaderLogin extends Component {
     }
     logout(){
         // ローカルストレージからデータを削除
-        window.localStorage['sns_id'] = ''
-        window.localStorage['sns_auth_token'] = ''
+        window.localStorage['login_id'] = ''
+        window.localStorage['login_name'] = ''
+        window.localStorage['login_auth_token'] = ''
         window.localStorage['conversation'] = ''
         // 状態のリセット
         this.setState({userid: ''})
+        this.setState({username: ''})
         this.setState({passwd: ''})
         this.setState({upd: Date()})
         this.setState({showModal : false})
@@ -177,7 +181,7 @@ export default class OsumAIHeaderLogin extends Component {
                 </Nav>
                 <Nav pullRight>
                     <div>
-                        <h3 className='text-center' style={styles.osumai_nav_right}>{state.userid}</h3>&nbsp;&nbsp;
+                        <h3 className='text-center' style={styles.osumai_nav_right}>{state.username}</h3>&nbsp;&nbsp;
                         <Button type="button" bsSize="large" bsStyle="primary" onClick={e => this.logout()} style={styles.osumai_nav_right}>
                             ログアウト
                         </Button>
@@ -194,7 +198,7 @@ export default class OsumAIHeaderLogin extends Component {
             return <Redirect to={this.state.jump}/>
         }
         // this.setState({jump: ''})
-        if (window.localStorage['sns_auth_token'] != '') {
+        if (window.localStorage['login_auth_token'] != '') {
             return appLogout(this.state)
         }
         return appLogin(this.state)

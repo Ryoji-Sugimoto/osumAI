@@ -11,7 +11,32 @@ import OsumAISoudanChat from './osumai_soudan_chat'
 export default class OsumAIUserAdd extends Component {
   constructor (props) {
     super(props)
-    this.state = { id: '', password: '', name: '', area: [], income: '', owncar: '', family: [], isCancel: false }
+    this.state = { userid: '', passwd: '', username: '', area: [], income: '', owncar: '', family: [], isCancel: false }
+  }
+
+  // APIを呼びだし、トークンを得てlocalStorageに保存する
+  api (command) {
+    request
+    .get('/api/' + command)
+    .query({
+        userid: this.state.userid,
+        username: this.state.username,
+        passwd: this.state.passwd
+    })
+    .end((err, res) => {
+        const r = res.body
+        if (err || !r.status) {
+            this.setState({msg: r.msg})
+            alert(this.state.msg)
+            return
+        }
+        console.log(r)
+        if (r.status && r.token) {
+            // トップに戻す
+            this.setState({isCancel: true})
+            return
+        }
+    })
   }
 
   render () {
@@ -41,101 +66,8 @@ export default class OsumAIUserAdd extends Component {
       </Panel>
     )
 
-    const areaItem = (no, state, city) => (
-      <div>
-        <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            第{no}希望：
-          </Col>
-          <Col sm={2}  >
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">大阪府</option>
-            </FormControl>
-          </Col>
-          <Col sm={2} >
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">大阪市</option>
-            </FormControl>
-          </Col>
-          <Col sm={6} >
-            <Button type="button">
-              削除
-            </Button>
-          </Col>
-        </FormGroup>
-      </div>
-    )
-
-    const familyItemInput = () => (
-      <div>
-        <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            家族：
-          </Col>
-          <Col sm={2} componentClass={ControlLabel} >
-            <Button type="button">
-              追加
-            </Button>
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            続柄
-          </Col>
-          <Col sm={2}>
-            <FormControl componentClass="select" placeholder="select">
-              <option>夫</option>
-              <option value="select">妻</option>
-            </FormControl>
-          </Col>
-          <Col componentClass={ControlLabel} sm={2}>
-            生年月日
-          </Col>
-          <Col sm={2}>
-            <FormControl componentClass="input" placeholder="select">
-              1991/04/01
-            </FormControl>
-          </Col>
-        </FormGroup>
-
-        <FormGroup>
-        <Col componentClass={ControlLabel} sm={2}>
-            職業
-          </Col>
-          <Col sm={2} >
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">専業主婦</option>
-            </FormControl>
-          </Col>
-          <Col componentClass={ControlLabel} sm={2}>
-            地域
-          </Col>
-          <Col sm={2} >
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">大阪府</option>
-            </FormControl>
-          </Col>
-          <Col sm={4} >
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">大阪市</option>
-            </FormControl>
-          </Col>
-        </FormGroup>
-
-        <FormGroup>
-          <Col componentClass={ControlLabel} sm={2}>
-            趣味
-          </Col>
-          <Col sm={10}>
-            <FormControl componentClass="input" placeholder="select">
-              
-            </FormControl>
-          </Col>
-        </FormGroup>
-
-      </div>
-    )
-
+    const changed = (name, e) => this.setState({[name]: e.target.value})
+ 
     if (this.state.isCancel) {
       this.setState({isCancel: false})
       return <Redirect to={'/'}/>
@@ -152,13 +84,13 @@ export default class OsumAIUserAdd extends Component {
                 ログインID
               </Col>
               <Col sm={5}>
-                <FormControl type="text" placeholder="ログイン時に使用するIDを入力してください。" />
+                <FormControl type="text" placeholder="ログイン時に使用するIDを入力してください。" onChange={e => changed('userid', e)}/>
               </Col>
               <Col componentClass={ControlLabel} sm={1}>
                 パスワード
               </Col>
               <Col sm={5}>
-                <FormControl type="password" placeholder="英数文字が使用できます。" />
+                <FormControl type="password" placeholder="英数文字が使用できます。" onChange={e => changed('passwd', e)}/>
               </Col>
             </FormGroup>
 
@@ -167,10 +99,9 @@ export default class OsumAIUserAdd extends Component {
                 お名前
               </Col>
               <Col sm={11}>
-                <FormControl type="text" placeholder="お名前" />
+                <FormControl type="text" placeholder="お名前" onChange={e => changed('username', e)}/>
               </Col>
             </FormGroup>
-
           </Panel>
 
           <Panel collapsible defaultExpanded header="住みたい地域" bsStyle="info">
@@ -309,7 +240,7 @@ export default class OsumAIUserAdd extends Component {
 
           <FormGroup>
             <Col smOffset={2} sm={10}>
-              <Button type="button" onClick={e => {this.setState({isCancel: true})}}>
+              <Button type="button" onClick={e => {this.api('adduser')}}>
                 登録
               </Button>
               <Button type="button" onClick={e => {this.setState({isCancel: true})}}>
@@ -320,6 +251,7 @@ export default class OsumAIUserAdd extends Component {
         </Form>
       </div>
     )
+   
   }
 
   componentDidMount() {

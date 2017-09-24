@@ -28,7 +28,8 @@ app.listen(portNo, () => {
 app.get('/api/adduser', (req, res) => {
   const userid = req.query.userid
   const passwd = req.query.passwd
-  if (userid === '' || passwd === '') {
+  const username = req.query.username
+  if (userid === '' || passwd === '' || username === '') {
     return res.json({status: false, msg: 'パラメータが空'})
   }
   // 既存ユーザのチェック
@@ -37,7 +38,7 @@ app.get('/api/adduser', (req, res) => {
       return res.json({status: false, msg: '既にユーザがいます'})
     }
     // 新規追加
-    db.addUser(userid, passwd, (token) => {
+    db.addUser(userid, passwd, username, (token) => {
       if (!token) {
         res.json({status: false, msg: 'DBのエラー'})
       }
@@ -49,16 +50,16 @@ app.get('/api/adduser', (req, res) => {
 app.get('/api/login', (req, res) => {
   const userid = req.query.userid
   const passwd = req.query.passwd
-  db.login(userid, passwd, (err, token) => {
+  db.login(userid, passwd, (err, token, username) => {
     if (err) {
       res.json({status: false, msg: '認証エラー'})
       return
     }
     // ログイン成功したらトークンを返す
-    res.json({status: true, token})
+    res.json({status: true, token, username})
   })
 })
-// ユーザ情報を取得 --- (※8)
+// ユーザ情報を取得 
 app.get('/api/get_user', (req, res) => {
   const userid = req.query.userid
   db.getUser(userid, (user) => {

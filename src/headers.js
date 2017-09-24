@@ -7,7 +7,7 @@ import OsumAIHeaderLogin from './header_login'
 export default class OsumAIHeader extends Component {
 
     render () {
-        if (window.localStorage['sns_auth_token'] != '') {
+        if (window.localStorage['login_auth_token'] != '') {
             return (
                 <div style={styles.osumai_header}>
                     <Jumbotron style={styles.osumai_bg}>
