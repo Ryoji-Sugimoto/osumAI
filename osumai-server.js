@@ -27,8 +27,8 @@ app.listen(portNo, () => {
 // ユーザ追加用のAPI - ユーザを追加する --- (※3)
 app.get('/api/adduser', (req, res) => {
   const userid = req.query.userid
-  const passwd = req.query.passwd
   const username = req.query.username
+  const passwd = req.query.passwd
   if (userid === '' || passwd === '' || username === '') {
     return res.json({status: false, msg: 'パラメータが空'})
   }

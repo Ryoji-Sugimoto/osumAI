@@ -256,26 +256,17 @@ export default class OsumAIUserAdd extends Component {
 
   componentDidMount() {
     console.log('OsumAIUserAdd::componentDidMount')
-    // super.componentDidMount()
   }
   componentWillUnmount() {
     console.log('OsumAIUserAdd::componentWillUnmount')
-    // super.componentWillUnmount()
   }
   componentWillReceiveProps(nextProps) {
     console.log('OsumAIUserAdd::componentWillReceiveProps')
-    // super.componentWillReceiveProps(nextProps)
   }
-  // shouldComponentUpdate(nextProps, nextState){
-  //   console.log('OsumAIUserAdd::shouldComponentUpdate')
-  //   // super.shouldComponentUpdate(nextProps, nextState)
-  // }
   componentWillUpdate(nextProps, nextState){
     console.log('OsumAIUserAdd::componentWillUpdate')
-    // super.componentWillUpdate(nextProps, nextState)
   }
   componentDidUpdate(prevProps, prevState){
     console.log('OsumAIUserAdd::componentDidUpdate')
-    // super.componentDidUpdate(prevProps, prevState)
   }  
 }

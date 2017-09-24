@@ -32,27 +32,18 @@ export default class OsumAIHeader extends Component {
     }
     componentDidMount() {
         console.log('OsumAIHeader::componentDidMount')
-        // super.componentDidMount()
     }
     componentWillUnmount() {
         console.log('OsumAIHeader::componentWillUnmount')
-        // super.componentWillUnmount()
     }
     componentWillReceiveProps(nextProps) {
         console.log('OsumAIHeader::componentWillReceiveProps')
-        // super.componentWillReceiveProps(nextProps)
     }
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log('OsumAIHeader::shouldComponentUpdate')
-    //     // super.shouldComponentUpdate(nextProps, nextState)
-    // }
     componentWillUpdate(nextProps, nextState) {
         console.log('OsumAIHeader::componentWillUpdate')
-        // super.componentWillUpdate(nextProps, nextState)
     }
     componentDidUpdate(prevProps, prevState) {
         console.log('OsumAIHeader::componentDidUpdate')
-        // super.componentDidUpdate(prevProps, prevState)
     }
 
 }

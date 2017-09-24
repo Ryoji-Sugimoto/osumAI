@@ -197,7 +197,6 @@ export default class OsumAIHeaderLogin extends Component {
         if(this.state.jump && this.state.jump != window.location.pathname) {
             return <Redirect to={this.state.jump}/>
         }
-        // this.setState({jump: ''})
         if (window.localStorage['login_auth_token'] != '') {
             return appLogout(this.state)
         }
@@ -206,31 +205,20 @@ export default class OsumAIHeaderLogin extends Component {
 
     componentDidMount() {
         console.log('OsumAIHeaderLogin::componentDidMount')
-        // super.componentDidMount()
         console.log('OsumAIHeaderLogin::setState(jump:)')
         this.setState({jump: ''})
     }
     componentWillUnmount() {
         console.log('OsumAIHeaderLogin::componentWillUnmount')
-        // super.componentWillUnmount()
     }
     componentWillReceiveProps(nextProps) {
         console.log('OsumAIHeaderLogin::componentWillReceiveProps')
-        // super.componentWillReceiveProps(nextProps)
     }
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log('OsumAIHeaderLogin::shouldComponentUpdate')
-    //     // super.shouldComponentUpdate(nextProps, nextState)
-    // }
     componentWillUpdate(nextProps, nextState) {
         console.log('OsumAIHeaderLogin::componentWillUpdate')
-        // super.componentWillUpdate(nextProps, nextState)
     }
     componentDidUpdate(prevProps, prevState) {
         console.log('OsumAIHeaderLogin::componentDidUpdate')
-        // super.componentDidUpdate(prevProps, prevState)
-        // console.log('OsumAIHeaderLogin::setState(jump:)')
-        // this.setState({jump: ''})
     }
 
 

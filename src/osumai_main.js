@@ -23,27 +23,18 @@ export default class OsumAIMain extends Component {
   }
   componentDidMount() {
     console.log('OsumAIMain::componentDidMount')
-    // super.componentDidMount()
   }
   componentWillUnmount() {
     console.log('OsumAIMain::componentWillUnmount')
-    // super.componentWillUnmount()
   }
   componentWillReceiveProps(nextProps) {
     console.log('OsumAIMain::componentWillReceiveProps')
-    // super.componentWillReceiveProps(nextProps)
   }
-  // shouldComponentUpdate(nextProps, nextState){
-  //   console.log('OsumAIMain::shouldComponentUpdate')
-  //   // super.shouldComponentUpdate(nextProps, nextState)
-  // }
   componentWillUpdate(nextProps, nextState){
     console.log('OsumAIMain::componentWillUpdate')
-    // super.componentWillUpdate(nextProps, nextState)
   }
   componentDidUpdate(prevProps, prevState){
     console.log('OsumAIMain::componentDidUpdate')
-    // super.componentDidUpdate(prevProps, prevState)
   }
 
 }
