@@ -39,7 +39,7 @@ retrieve.retrieveAndRank.listRankers({
 // solrClientを生成する。
 const solrClient = retrieve.retrieveAndRank.createSolrClient({
   cluster_id: 'scda051d7a_9e12_411d_9792_4088e8f3d237',
-  collection_name: 'review'
+  collection_name: 'review_dummy'
 });
 
 // RaR呼び出しフラグ
