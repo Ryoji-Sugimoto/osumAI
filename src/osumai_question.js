@@ -16,10 +16,10 @@ export default class OsumAIQuestion extends Component {
         <div style={styles.osumai_question_container}>
             <p>■1.当システムの、使い勝手、提案結果に対する評価について気づいた点を入力してください。 </p>
           <div>
-            <input type="text" size="100"/>
+          <input type="text" style={styles.osumai_text}/>
           </div>
         </div>
-        <div>
+        <div style={styles.osumai_submit}>
           <input type="submit" value="登録"/>
         </div>
       </div>
