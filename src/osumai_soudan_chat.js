@@ -17,6 +17,10 @@ export default class OsumAISoudanChat extends Component {
       this.state = { conversation: JSON.parse(window.localStorage['conversation']) }
     }
   }
+  restConversation() {
+    window.localStorage['conversation'] = ''
+    this.setState({conversation: []})
+  }
   addAsk (ask) {
     this.state.conversation.push({type: 'ask', ask: ask, answer: ''})
 
@@ -51,6 +55,9 @@ export default class OsumAISoudanChat extends Component {
     const height = conversationList.clientHeight;
     const maxScrollTop = scrollHeight - height;
     ReactDOM.findDOMNode(conversationList).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  }
+  componentDidMount() {
+    this.scrollToBottom();
   }
   componentDidUpdate() {
     this.scrollToBottom();

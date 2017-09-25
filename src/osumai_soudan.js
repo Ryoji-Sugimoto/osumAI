@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {Redirect, Link, withRouter} from 'react-router-dom'
-import { Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Button, Glyphicon} from 'react-bootstrap'
+import { Form, FormGroup, ControlLabel, InputGroup, FormControl, Col, Panel, Button, Glyphicon} from 'react-bootstrap'
 import request from 'superagent'
 import styles from './styles'
 import OsumAIHeader from './headers'
@@ -19,7 +19,6 @@ export default class OsumAISoudan extends Component {
 			return
 		}
 
-		// dummy Q
 		this.refs.chat.addAsk(this.state.ask)
 
 		// Watsonに尋ねて解答をもらう
@@ -40,8 +39,8 @@ export default class OsumAISoudan extends Component {
 
   // Watsonに尋ねる
   ask(url, text) {
-  // ajaxでconversationにリクエストを投げる。
-  request.get(url)
+    // ajaxでconversationにリクエストを投げる。
+    request.get(url)
     .query({
       "text": text
     })
@@ -58,9 +57,35 @@ export default class OsumAISoudan extends Component {
         }
       }
     })
-}
+  }
+
+  resetConversation() {
+    this.refs.chat.restConversation()
+    this.ask('/chat/ask/conversation', 'conversation_start')
+  }
 
   render () {
+    const conversationResetMessage = () => {
+      if(window.localStorage['conversation'] != '' && 
+        JSON.parse(window.localStorage['conversation']).length > 1){
+        return (
+          <FormGroup>
+            <Panel>
+              <Col componentClass={ControlLabel} sm={11}>
+                ご相談を最初から行うには右のリセットボタンをクリックしてください。
+              </Col>
+              <Col componentClass={ControlLabel} sm={1}>
+                <Button type="button" onClick={e => {this.resetConversation()}}>
+                  リセット
+                </Button>
+              </Col>
+            </Panel>
+          </FormGroup>
+        )
+      } else {
+        return ('')
+      }
+    }
     if (this.state.station) {
       <Redirect to={this.state.station}/>
       this.setState({station: ''})
@@ -69,19 +94,24 @@ export default class OsumAISoudan extends Component {
       <div>
         <OsumAIHeader title='お住まい相談' />
         <Form style={styles.osumai_soudan_input}>
-          <FormGroup>
-            <InputGroup>
-              <FormControl type="text" value={this.state.ask}
-                  onKeyDown={e => this.keyProc(e)}
-                  onKeyPress={e => this.keyProc2(e)}
-                  onKeyUp={e => this.keyProc2(e)}
-                  onChange={e => this.setState({ask: e.target.value})}
-                  ref='askinput'/>
-              <InputGroup.Addon onClick={e => this.postProc()}><Glyphicon glyph="send" title="送信"/></InputGroup.Addon>
-            </InputGroup>
-          </FormGroup>
+          <Panel>
+            {conversationResetMessage()}
+            <FormGroup>
+              <Col sm={12}>
+                <InputGroup>
+                  <FormControl type="text" value={this.state.ask}
+                      onKeyDown={e => this.keyProc(e)}
+                      onKeyPress={e => this.keyProc2(e)}
+                      onKeyUp={e => this.keyProc2(e)}
+                      onChange={e => this.setState({ask: e.target.value})}
+                      ref='askinput'/>
+                  <InputGroup.Addon onClick={e => this.postProc()}><Glyphicon glyph="send" title="送信"/></InputGroup.Addon>
+                </InputGroup>
+              </Col>
+            </FormGroup>
+          </Panel>
         </Form>
-        <OsumAISoudanChat ref='chat'/>
+       <OsumAISoudanChat ref='chat'/>
       </div>
     )
   }
@@ -102,3 +132,25 @@ export default class OsumAISoudan extends Component {
     input && input.focus()
   }
 }
+
+class OsumAISoudanReset extends Component {
+  render () {
+    if(window.localStorage['conversation'] != ''){
+      return (
+        <FormGroup>
+          <Panel>
+            <Col componentClass={ControlLabel} sm={11}>
+              ご相談を最初から行うには右のリセットボタンをクリックしてください。
+            </Col>
+            <Col componentClass={ControlLabel} sm={1}>
+              <Button type="button" onClick={e => {this.resetConversation()}}>
+                リセット
+              </Button>
+            </Col>
+          </Panel>
+        </FormGroup>
+      )
+    }
+  }
+}
+

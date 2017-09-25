@@ -113,7 +113,7 @@ render () {
       withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBMZ2MMy6qB1nXmmpgZ7XIgk3l9Uq9M0jo&libraries=geometry,drawing,places",
         loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `400px` }} />,
+        containerElement: <div style={{ width: `90%`, height: `400px` }} />,
         mapElement: <div style={{ height: `100%` }} />,
       }),
       withState('zoom', 'onZoomChange', 16),

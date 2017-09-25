@@ -26,10 +26,11 @@ const styles = {
     overflowY: 'scroll',
     paddingLeft: 30,
     paddingRight: 30,
+    marginTop: 10,
     marginLeft: 15,
     marginRight: 15,
     minHeight: '100%',
-    height: 'calc(100vh - 260px)'
+    height: 'calc(100vh - 400px)'
     // height: 500
   },
   osumai_result_area:{
@@ -39,7 +40,7 @@ const styles = {
   osumai_result_container:{
     backgroundColor: 'white',
     padding: 30,
-    marginTop: 15,
+    marginTop: 10,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 15
