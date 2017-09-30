@@ -176,7 +176,7 @@ export default class OsumAIHeaderLogin extends Component {
                 <Nav>
                     <NavItem eventKey={1} href="#"><Link to="/"><Glyphicon glyph="home" title="ホーム"/></Link></NavItem>
                     <NavItem eventKey={2} href="#"><Link to="/chat"><Glyphicon glyph="comment" title="お住い相談"/></Link></NavItem>
-                    <NavItem eventKey={3} href="#"><Link to="/favorite/大阪駅"><Glyphicon glyph="star" title="お気に入り"/></Link></NavItem>
+                    <NavItem eventKey={3} href="#"><Link to="/favorite"><Glyphicon glyph="star" title="お気に入り"/></Link></NavItem>
                     <NavItem eventKey={4} href="#"><Link to="/survey"><Glyphicon glyph="edit" title="アンケート"/></Link></NavItem>
                 </Nav>
                 <Nav pullRight>

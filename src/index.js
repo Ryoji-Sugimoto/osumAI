@@ -9,6 +9,7 @@ import OsumAISoudan from './osumai_soudan'
 import OsumAIUserAdd from './osumai_user_add'
 import OsumAISoudanResult from './osumai_soudan_result'
 import OsumAIQuestion from './osumai_question'
+import OsumAIFavoriteList from './osumai_favorite_list'
 
 function loggedIn() {
   if (!token) {
@@ -25,7 +26,7 @@ const OsumAIApp = () => (
         <Route path='/main' component={OsumAIMain} />
         <Route path='/chat' component={OsumAISoudan} />
         <Route path='/useradd' component={OsumAIUserAdd} />
-        <Route path='/favorite/:station' component={OsumAISoudanResult} />
+        <Route path='/favorite' component={OsumAIFavoriteList} />
         <Route path='/result/:station' component={OsumAISoudanResult} />
         <Route path='/survey' component={OsumAIQuestion} />
         <Route component={OsumAIMain} />
