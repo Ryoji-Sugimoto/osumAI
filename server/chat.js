@@ -79,6 +79,7 @@ router.get('/ask/conversation', (req, res) => {
   if (question == "conversation_start") {
     // contextの初期化
     context = {};
+    needsLifeStyleArray=[];
   }
 
   conversation.conversationModel.message({
