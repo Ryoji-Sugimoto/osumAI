@@ -189,6 +189,8 @@ router.get('/ask/rank', (req, res) => {
       if (err) {
         logger.error('Error searching for documents: ' + err);
       } else {
+        // ライフスタイルに対する要望リストを初期化する。
+        needsLifeStyleArray=[];
         logger.debug('RaR : ' + JSON.stringify(searchResponse.response.docs));
 
         var message = [];
