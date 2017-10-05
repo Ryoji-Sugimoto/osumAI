@@ -42,21 +42,6 @@ const solrClient = retrieve.retrieveAndRank.createSolrClient({
   collection_name: 'review_dummy'
 });
 
-// RaR呼び出しフラグ
-var callRaRFlg = false;
-
-// conversationのコンテキスト
-var context = {};
-
-// ライフスタイルに対する要望
-var needsLifeStyleArray = [];
-
-// 場所検索フラグ
-var placeFlg = false;
-
-// ユーザーから入力された場所
-var place = '';
-
 const
   // RaRの回答結果表示数
   displayRaR = 3,
@@ -76,10 +61,65 @@ router.get('/ask/conversation', (req, res) => {
   // ユーザーからの質問を取得する。
   var question = req.query.text;
   console.log('question : ' + question);
+  // conversationのコンテキスト
+  var context = {};
+  // ライフスタイルに対する要望
+  var needsLifeStyleArray = [];
+  // RaR呼び出しフラグ
+  var callRaRFlg = false;
+  // 場所検索フラグ
+  var placeFlg = false;
+  // ユーザーから入力された場所
+  var place = '';
+
   if (question == "conversation_start") {
     // contextの初期化
     context = {};
+    req.session.context = context;
+
+    // ライフスタイルに関する要望の初期化
     needsLifeStyleArray=[];
+    req.session.needsLifeStyleArray = needsLifeStyleArray;
+
+    // RaR呼び出しフラグ
+    callRaRFlg = false;
+    req.session.callRaRFlg = callRaRFlg;
+
+    // 場所検索フラグ
+    placeFlg = false;
+    req.session.placeFlg = placeFlg;
+
+    // ユーザーから入力された場所
+    place = '';
+    req.session.place = place;
+
+  }
+
+  // セッションから情報を取得する。
+
+  // コンテキスト
+  if (req.session.context != undefined) {
+    context = req.session.context;
+  }
+
+  // ライフスタイルに関する要望
+  if(req.session.needsLifeStyleArray != undefined){
+    needsLifeStyleArray = req.session.needsLifeStyleArray;
+  }
+
+  // RaR呼び出しフラグ
+  if(req.session.callRaRFlg != undefined){
+    callRaRFlg = req.session.callRaRFlg;
+  }
+
+  // 場所検索フラグ
+  if(req.session.placeFlg != undefined){
+    placeFlg = req.session.placeFlg;
+  }
+
+  // ユーザーから入力された場所
+  if(req.session.place != undefined){
+    place = req.session.place;
   }
 
   conversation.conversationModel.message({
@@ -95,6 +135,7 @@ router.get('/ask/conversation', (req, res) => {
     } else {
       // conversationから回答を受け取る
       var conAnswer = response;
+      logger.debug('session_id : ' + req.session.id);
       logger.debug('Conversation : ' + JSON.stringify(response));
 
       // conversationから受け取ったcontextの値を書き換える。
@@ -123,13 +164,18 @@ router.get('/ask/conversation', (req, res) => {
         needsLifeStyleArray.push(needsLifeStyle);
       }
 
+      // セッションに保持する。
+      req.session.context = context;
+      req.session.needsLifeStyleArray = needsLifeStyleArray;
+      req.session.callRaRFlg = callRaRFlg;
+      req.session.placeFlg = placeFlg;
+      req.session.place = place;
+
       // クライアントに値を送信する。
       res.send({
         message: message,
-        callRaRFlg: callRaRFlg,
-        needsLifeStyleArray: needsLifeStyleArray,
-        placeFlg: placeFlg,
-        place: place
+        callRaRFlg: req.session.callRaRFlg,
+        needsLifeStyleArray: req.session.needsLifeStyleArray
       });
     }
   });
@@ -137,9 +183,9 @@ router.get('/ask/conversation', (req, res) => {
 
 // RaRから回答を取得する。
 router.get('/ask/rank', (req, res) => {
-  if (callRaRFlg) {
+  if (req.session.callRaRFlg) {
     // callRaRFlgを初期化する。
-    callRaRFlg = false;
+    req.session.callRaRFlg = false;
     // ユーザーからの質問を取得する。
     var questionParam = req.query.text;
     // 質問
@@ -149,11 +195,11 @@ router.get('/ask/rank', (req, res) => {
     // RaRに投げる検索クエリー
     var query = '';
 
-    if (placeFlg) {
+    if (req.session.placeFlg) {
       // 特定の場所について検索する場合
 
       // 特定の場所を検索する検索条件を生成する。
-      question = 'title:' + place;
+      question = 'title:' + req.session.place;
 
     } else {
       // ライフスタイルについての要望について検索する場合
@@ -190,7 +236,7 @@ router.get('/ask/rank', (req, res) => {
         logger.error('Error searching for documents: ' + err);
       } else {
         // ライフスタイルに対する要望リストを初期化する。
-        needsLifeStyleArray=[];
+        req.session.needsLifeStyleArray = [];
         logger.debug('RaR : ' + JSON.stringify(searchResponse.response.docs));
 
         var message = [];
@@ -214,9 +260,7 @@ router.get('/ask/rank', (req, res) => {
         // クライアントに値を送信する。
         res.send({
           message: message,
-          place: place,
-          placeFlg: placeFlg,
-          callRaRFlg: false
+          callRaRFlg: req.session.callRaRFlg
         });
       }
     });

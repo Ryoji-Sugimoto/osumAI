@@ -11,8 +11,18 @@ const favicon = require('serve-favicon')
 const log4js = require('log4js');
 log4js.configure(__dirname + '/logs/log4js.config.json');
 var logger = log4js.getLogger('app');
-
+// ajax
 var request = require('superagent');
+// セッション
+var session = require('express-session');
+
+// セッションの設定を定義する。
+var session_opt = {
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {maxAge: 60 * 60 * 1000}
+};
 
 // WEBサーバを起動 --- (※2)
 const express = require('express')
@@ -59,7 +69,7 @@ app.get('/api/login', (req, res) => {
     res.json({status: true, token, username})
   })
 })
-// ユーザ情報を取得 
+// ユーザ情報を取得
 app.get('/api/get_user', (req, res) => {
   const userid = req.query.userid
   db.getUser(userid, (user) => {
@@ -68,6 +78,7 @@ app.get('/api/get_user', (req, res) => {
   })
 })
 
+app.use(session(session_opt));
 app.use('/chat', chat);
 app.use(favicon(__dirname + '/public/favicon.ico'));
 // log4jsの設定
@@ -101,11 +112,11 @@ app.use('/api/facilities/:station', (req, res) =>{
                         {key: 'kekka15' , name: '病院・医院'},
                         {key: 'kekka16' , name: '暮らし'},
                         {key: 'kekka17' , name: '旅行・宿泊'}]
-  
+
   var ido = '';
   var keido = '';
   var kekkaList = [];
-  
+
   if (!station) {
     console.log('施設情報取得エラー(地点データ無し)');
     return res.json({status: false, msg: '施設情報取得エラー(地点データ無し)'})
@@ -123,7 +134,7 @@ app.use('/api/facilities/:station', (req, res) =>{
 
         ido = res2.body.ido;
         keido = res2.body.keido;
-        
+
         var i=1;
         for(;;) {
           var varName = "kekka" + i;
@@ -144,7 +155,7 @@ app.use('/api/facilities/:station', (req, res) =>{
           i++;
         }
         res.json({status: true, ido: ido, keido: keido, facilities: kekkaList})
-        
+
       } else {
         console.log('エラーerr2：'+ err2);
         console.log('エラーres2：'+ res2);
